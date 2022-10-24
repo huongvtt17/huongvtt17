@@ -1,0 +1,40 @@
+{
+    "hello": "Xin chào",
+    "start": "Bắt đầu",
+    "list": "Danh sách",
+    "seeAll": "Xem tất cả",
+    "description": "Mô tả ngắn về sản phẩm",
+    "search": "Tìm kiếm",
+    "create": "Tạo",
+    "cancel": "Huỷ",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "select": "Chọn",
+    "chooseTime": "Chọn thời gian",
+    "send": "Gửi",
+    "add": "Thêm",
+    "back": "Quay lại",
+    "share": "Chia sẻ ",
+    "tabbar": {
+        "home": "Trang chủ",
+        "booking": "Cẩm nang",
+        "vaccine": "Vắc xin",
+        "account": "Tài khoản"
+    },
+    "login": {
+        "header": "ĐĂNG NHẬP",
+        "forgot": "Quên mật khẩu",
+        "login": "Đăng nhập",
+        "noAccount": "Bạn chưa có tài khoản?",
+        "register": "Đăng ký tại đây"
+    },
+    "register": {
+        "header": "ĐĂNG KÝ",
+        "login": "Đăng ký",
+        "noAccount": "Bạn đã có tài khoản?",
+        "register": "Đăng nhập"
+    },
+    "homepage": {
+        "recent": "Gần đây"
+    }
+}

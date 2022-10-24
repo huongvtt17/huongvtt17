@@ -1,0 +1,175 @@
+{
+    "hello": "Xin chào",
+    "start": "Bắt đầu",
+    "list": "Danh sách",
+    "seeMore": "Xem thêm",
+    "description": "Mô tả ngắn về sản phẩm",
+    "search": "Tìm kiếm",
+    "create": "Tạo",
+    "cancel": "Huỷ",
+    "close": "Đóng",
+    "confirm": "Xác nhận",
+    "select": "Chọn",
+    "chooseTime": "Chọn thời gian",
+    "send": "Gửi",
+    "add": "Thêm",
+    "back": "Quay lại",
+    "share": "Chia sẻ ",
+    "tabbar": {
+        "home": "Trang chủ",
+        "booking": "Cẩm nang",
+        "vaccine": "Vác-cin",
+        "account": "Tài khoản"
+    },
+    "introduce": {
+        "company": "SK Viet Nam",
+        "title": "Hệ thống phòng khám thông minh"
+    },
+    "registSlide": {
+        "title": "Hệ thống phòng khám thông minh",
+        "register": "Tạo tài khoản",
+        "registered": "Đã có tài khoản? ",
+        "login": "Đăng nhập"
+    },
+    "login": {
+        "hello": "Xin chào.",
+        "loginYourAccount": "Đăng nhập vào tài khoản của bạn",
+        "phoneNumber": "Số điện thoại",
+        "password": "Mật khẩu",
+        "content": "Sử dụng số điện thoại và mật khẩu bạn đã đăng ký từ trước để tiến hành đăng nhập vào tài khoản",
+        "login": "Đăng nhập",
+        "register": "Đăng ký tài khoản"
+    },
+    "register": {
+        "hello": "Xin chào.",
+        "content": "Chào mừng bạn gia nhập hệ thống phòng khám thông minh SK Viet Nam",
+        "parentsInfo": "Thông tin phụ huynh",
+        "childInfo": "Thông tin của bé",
+        "name": "Họ tên",
+        "phoneNumber": "Số điện thoại",
+        "password": "Mật khẩu",
+        "city": "Thành phố",
+        "district": "Quận/huyện",
+        "birthday": "Ngày sinh",
+        "gender": "Giới tính",
+        "regist": "Đăng ký",
+        "registered": "Đã có tài khoản? ",
+        "login": "Đăng nhập"
+    },
+    "booking": {
+        "titleHeader": "Danh sách lịch hẹn",
+        "tabView1": "Lịch hẹn sắp tới",
+        "tabView2": "Lịch hẹn đã qua",
+        "note": "Ghi chú",
+        "type": "Khám tổng quát",
+        "company": "Phòng khám đa khoa SK Việt Nam",
+        "address": "Số 1, Khuất Duy Tiến, Thanh Xuân, Hà Nội",
+        "status": "Nhân viên phòng khám sẽ gọi xác nhận lịch"
+    },
+    "bookingDetails": {
+        "titleHeader": "Chi tiết lịch hẹn",
+        "contactName": "Họ tên liên hệ",
+        "contactPhone": "Điện thoại liên hệ",
+        "address": "Số 1, Khuất Duy Tiến, Thanh Xuân, Hà Nội",
+        "time": "Thời gian đặt hẹn",
+        "note": "Khám tổng quát",
+        "status": "Nhân viên phòng khám sẽ gọi xác nhận lịch",
+        "cancel": "Hủy lịch",
+        "content": "Thêm nội dung ghi chú"
+    },
+    "homepage": {
+        "booking": "Đặt lịch",
+        "schedule": "Lịch khám",
+        "clinic": "Phòng khám",
+        "family": "Gia đình",
+        "clinicVisited": "Phòng khám đã ghé qua",
+        "clinicsNearYou": "Phòng khám gần bạn",
+        "products": "Sản phẩm nổi bật"
+    },
+    "clinic": {
+        "list": "Danh sách phòng khám",
+        "searchClinic": "Tìm phòng khám",
+        "content": "Tìm kiếm các phòng khám gần bạn"
+    },
+    "clinicInfo": {
+        "perTime": "Thời gian khám \n một ca",
+        "totalPerson": "Người đã khám",
+        "description": "Mô tả",
+        "product": "Sản phẩm",
+        "regist": "Đăng ký",
+        "unregist": "Hủy đăng ký"
+    },
+    "products": {
+        "head": "Sản phẩm",
+        "origin": "Xuất xứ",
+        "components": "Thành phần",
+        "uses": "Công dụng",
+        "dosage": "Liều dùng",
+        "addCart": "Thêm vào giỏ hàng"
+    },
+    "cart": {
+        "head": "Giỏ hàng",
+        "noProducts": "Chưa có sản phẩm nào",
+        "content": "Bạn chưa chọn mua sản phẩm nào, hãy quay lại và khám phá các sản phẩm nhé",
+        "goBack": "Quay lại",
+        "product": "Sản phẩm",
+        "total": "Tổng giá trị:",
+        "customer": "Thông tin người đặt",
+        "name": "Họ tên liên hệ",
+        "phone": "Số điện thoại",
+        "address": "Địa chỉ nhận hàng",
+        "order": "Đặt hàng (340.000 đ)"
+    },
+    "order": {
+        "head": "Danh sách đơn hàng",
+        "total": "Tổng giá trị",
+        "name": "Họ tên liên hệ",
+        "address": "Địa chỉ nhận hàng",
+        "status": "Nhân viên phòng khám sẽ gọi xác nhận đơn hàng",
+        "phone": "Số điện thoại",
+        "detail": "Chi tiết đơn hàng"
+    },
+    "account": {
+        "editProfile": "Sửa thông tin",
+        "message": "Tin nhắn",
+        "notification": "Thông báo",
+        "orderHistory": "Lịch sử đặt lịch khám",
+        "booking": "Lịch khám của gia đình",
+        "visitedClinic": "Phòng khám đã ghé qua",
+        "logOut": "Đăng xuất"
+    },
+    "updateInfo": {
+        "head": "Cập nhật thông tin",
+        "change": "Thay đổi",
+        "name": "Họ tên",
+        "birthday": "Sinh nhật",
+        "gender": "Giới tính",
+        "province": "Thành phố/Tỉnh",
+        "district": "Quận/huyện",
+        "address": "Địa chỉ cụ thể",
+        "save": "Chỉnh sửa"
+    },
+    "family": {
+        "head": "Thành viên trong gia đình",
+        "birthday": "Ngày sinh",
+        "gender": "Giới tính",
+        "addMember": "Thêm thành viên",
+        "detail": "Thông tin thành viên",
+        "booking": "Lịch khám",
+        "bookingFamily": "Lịch khám của gia đình"
+    },
+    "bookingCalendar": {
+        "head": "Đặt lịch hẹn",
+        "step1": "Chọn thời gian",
+        "step2": "Hoàn tất thông tin",
+        "selectDay": "Chọn ngày",
+        "selectTime": "Chọn ca",
+        "morning": "Sáng",
+        "evening": "Chiều",
+        "success": "Đặt lịch thành công!",
+        "contentBefore": "Bạn đã đặt lịch thành công tại ",
+        "contentAfter": ". Nhân viên phòng khám sẽ liên hệ với bạn trong thời gian sớm nhất.",
+        "seeCalendar": "Xem lịch",
+        "goHome": "Về trang chủ"
+    }
+}

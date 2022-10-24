@@ -1,0 +1,317 @@
+[
+    {
+        "id": 66,
+        "label": "Thành phố Hà Nội",
+        "VTProvinceId": 1
+    },
+    {
+        "id": 47,
+        "label": "Thành Phố Hồ Chí Minh",
+        "VTProvinceId": 2
+    },
+    {
+        "id": 6,
+        "label": "Thành phố Hải Phòng",
+        "VTProvinceId": 3
+    },
+    {
+        "id": 34,
+        "label": "Thành phố Đà Nẵng",
+        "VTProvinceId": 4
+    },
+    {
+        "id": 58,
+        "label": "Thành Phố Cần Thơ",
+        "VTProvinceId": 5
+    },
+    {
+        "id": 53,
+        "label": "Tỉnh Tiền Giang",
+        "VTProvinceId": 6
+    },
+    {
+        "id": 68,
+        "label": "Tỉnh Hậu Giang",
+        "VTProvinceId": 8
+    },
+    {
+        "id": 69,
+        "label": "Tỉnh Đắk Nông",
+        "VTProvinceId": 9
+    },
+    {
+        "id": 14,
+        "label": "Tỉnh Vĩnh Phúc",
+        "VTProvinceId": 10
+    },
+    {
+        "id": 8,
+        "label": "Tỉnh Bắc Ninh",
+        "VTProvinceId": 11
+    },
+    {
+        "id": 5,
+        "label": "Tỉnh Hải Dương",
+        "VTProvinceId": 12
+    },
+    {
+        "id": 3,
+        "label": "Tỉnh Hưng Yên",
+        "VTProvinceId": 13
+    },
+    {
+        "id": 24,
+        "label": "Tỉnh Hà Nam",
+        "VTProvinceId": 14
+    },
+    {
+        "id": 25,
+        "label": "Tỉnh Nam Định",
+        "VTProvinceId": 15
+    },
+    {
+        "id": 4,
+        "label": "Tỉnh Thái Bình",
+        "VTProvinceId": 16
+    },
+    {
+        "id": 26,
+        "label": "Tỉnh Ninh Bình",
+        "VTProvinceId": 17
+    },
+    {
+        "id": 17,
+        "label": "Tỉnh Hà Giang",
+        "VTProvinceId": 18
+    },
+    {
+        "id": 13,
+        "label": "Tỉnh Cao Bằng",
+        "VTProvinceId": 19
+    },
+    {
+        "id": 19,
+        "label": "Tỉnh Lào Cai",
+        "VTProvinceId": 20
+    },
+    {
+        "id": 12,
+        "label": "Tỉnh Bắc Kạn",
+        "VTProvinceId": 21
+    },
+    {
+        "id": 10,
+        "label": "Tỉnh Lạng Sơn",
+        "VTProvinceId": 22
+    },
+    {
+        "id": 16,
+        "label": "Tỉnh Tuyên Quang",
+        "VTProvinceId": 23
+    },
+    {
+        "id": 18,
+        "label": "Tỉnh Yên Bái",
+        "VTProvinceId": 24
+    },
+    {
+        "id": 11,
+        "label": "Tỉnh Thái Nguyên",
+        "VTProvinceId": 25
+    },
+    {
+        "id": 15,
+        "label": "Tỉnh Phú Thọ",
+        "VTProvinceId": 26
+    },
+    {
+        "id": 9,
+        "label": "Tỉnh Bắc Giang",
+        "VTProvinceId": 27
+    },
+    {
+        "id": 7,
+        "label": "Tỉnh Quảng Ninh",
+        "VTProvinceId": 28
+    },
+    {
+        "id": 23,
+        "label": "Tỉnh Lai Châu",
+        "VTProvinceId": 29
+    },
+    {
+        "id": 22,
+        "label": "Tỉnh Sơn La",
+        "VTProvinceId": 30
+    },
+    {
+        "id": 21,
+        "label": "Tỉnh Hòa Bình",
+        "VTProvinceId": 31
+    },
+    {
+        "id": 27,
+        "label": "Tỉnh Thanh Hóa",
+        "VTProvinceId": 32
+    },
+    {
+        "id": 28,
+        "label": "Tỉnh Nghệ An",
+        "VTProvinceId": 33
+    },
+    {
+        "id": 30,
+        "label": "Tỉnh Hà Tĩnh",
+        "VTProvinceId": 34
+    },
+    {
+        "id": 31,
+        "label": "Tỉnh Quảng Bình",
+        "VTProvinceId": 35
+    },
+    {
+        "id": 32,
+        "label": "Tỉnh Quảng Trị",
+        "VTProvinceId": 36
+    },
+    {
+        "id": 33,
+        "label": "Tỉnh Thừa Thiên Huế",
+        "VTProvinceId": 37
+    },
+    {
+        "id": 35,
+        "label": "Tỉnh Quảng Nam",
+        "VTProvinceId": 38
+    },
+    {
+        "id": 36,
+        "label": "Tỉnh Quảng Ngãi",
+        "VTProvinceId": 39
+    },
+    {
+        "id": 37,
+        "label": "Tỉnh Bình Định",
+        "VTProvinceId": 40
+    },
+    {
+        "id": 40,
+        "label": "Tỉnh Phú Yên",
+        "VTProvinceId": 41
+    },
+    {
+        "id": 41,
+        "label": "Tỉnh Khánh Hòa",
+        "VTProvinceId": 42
+    },
+    {
+        "id": 39,
+        "label": "Tỉnh Kon Tum",
+        "VTProvinceId": 43
+    },
+    {
+        "id": 38,
+        "label": "Tỉnh Gia Lai",
+        "VTProvinceId": 44
+    },
+    {
+        "id": 42,
+        "label": "Tỉnh Đắk Lắk",
+        "VTProvinceId": 45
+    },
+    {
+        "id": 44,
+        "label": "Tỉnh Lâm Đồng",
+        "VTProvinceId": 46
+    },
+    {
+        "id": 43,
+        "label": "Tỉnh Ninh Thuận",
+        "VTProvinceId": 47
+    },
+    {
+        "id": 50,
+        "label": "Tỉnh Bình Phước",
+        "VTProvinceId": 48
+    },
+    {
+        "id": 51,
+        "label": "Tỉnh Tây Ninh",
+        "VTProvinceId": 49
+    },
+    {
+        "id": 49,
+        "label": "Tỉnh Bình Dương",
+        "VTProvinceId": 50
+    },
+    {
+        "id": 46,
+        "label": "Tỉnh Đồng Nai",
+        "VTProvinceId": 51
+    },
+    {
+        "id": 45,
+        "label": "Tỉnh Bình Thuận",
+        "VTProvinceId": 52
+    },
+    {
+        "id": 48,
+        "label": "Tỉnh Bà Rịa - Vũng Tàu",
+        "VTProvinceId": 53
+    },
+    {
+        "id": 52,
+        "label": "Tỉnh Long An",
+        "VTProvinceId": 54
+    },
+    {
+        "id": 55,
+        "label": "Tỉnh Đồng Tháp",
+        "VTProvinceId": 55
+    },
+    {
+        "id": 59,
+        "label": "Tỉnh An Giang",
+        "VTProvinceId": 56
+    },
+    {
+        "id": 57,
+        "label": "Tỉnh Vĩnh Long",
+        "VTProvinceId": 57
+    },
+    {
+        "id": 54,
+        "label": "Tỉnh Bến Tre",
+        "VTProvinceId": 58
+    },
+    {
+        "id": 60,
+        "label": "Tỉnh Kiên Giang",
+        "VTProvinceId": 59
+    },
+    {
+        "id": 56,
+        "label": "Tỉnh Trà Vinh",
+        "VTProvinceId": 60
+    },
+    {
+        "id": 61,
+        "label": "Tỉnh Sóc Trăng",
+        "VTProvinceId": 61
+    },
+    {
+        "id": 62,
+        "label": "Tỉnh Bạc Liêu",
+        "VTProvinceId": 62
+    },
+    {
+        "id": 63,
+        "label": "Tỉnh Cà Mau",
+        "VTProvinceId": 63
+    },
+    {
+        "id": 67,
+        "label": "Tỉnh Điện Biên",
+        "VTProvinceId": 64
+    }
+]
