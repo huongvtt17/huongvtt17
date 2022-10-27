@@ -6,7 +6,6 @@ import { scale } from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux';
-import { Avatar } from "@rneui/themed";
 
 const Setting = memo(() => {
   const { navigate } = useNavigation();
@@ -27,12 +26,6 @@ const Setting = memo(() => {
         </TouchableOpacity>
         <Text style={styles.txtheader}>Cài đặt</Text>
       </View>
-      <Avatar
-          size={64}
-          rounded
-          title="Fc"
-          containerStyle={{ backgroundColor: '#3d4db7' }}
-        />
 
     </>
   );

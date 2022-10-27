@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import icons from '@/assets/icons';
 import { scale } from 'react-native-size-matters';
-
+import {LineChart} from 'react-native-charts-wrapper';
 
 
 const Temperature = memo(() => {
@@ -68,8 +68,10 @@ const Temperature = memo(() => {
       <Text style={styles.txtDisplay}> 25ºC</Text>
     </View>
     <Text style={styles.txtChart}>Biểu đồ</Text>
-    <View>
-     
+    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <LineChart style={styles.chart}
+            data={{dataSets:[{label: "demo", values: [{y: 2}, {y: 2}, {y: 1}]}]}}
+          />
     </View>
   </>
   );
@@ -134,6 +136,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     marginVertical: 30
+  },
+  chart: {
+    flex: 1
   }
 });
 
