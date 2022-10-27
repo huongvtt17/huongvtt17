@@ -3,77 +3,106 @@ import React, { memo, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import icons from '@/assets/icons';
 import { scale } from 'react-native-size-matters';
-import {LineChart} from 'react-native-charts-wrapper';
+//import {LineChart} from 'react-native-charts-wrapper';
+import { LineChart } from 'react-native-chart-kit';
+import { Dimensions } from "react-native";
 
 
 const Temperature = memo(() => {
   const { navigate } = useNavigation();
-  const { goBack} = useNavigation();
- 
-  // const getCurrentDate=()=>{
- 
-  //   let date = new Date().getDate();
-  //   let month = new Date().getMonth() + 1;
-  //   let year = new Date().getFullYear();
-  
-  //   //Alert.alert(date + '-' + month + '-' + year);
-  //   // You can turn it in to your desired format
-  //   return date + '-' + month + '-' + year;//format: d-m-y;
-  // }
+  const { goBack } = useNavigation();
+  const screenWidth = Dimensions.get("window").width;
+  const data = {
+    labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+      "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 120, 43, 12, 45, 43, 11, 75, 34, 23, 65, 34, 21, 53, 54, 52, 46, 87, 11, 32, 76],
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+
+        strokeWidth: 2 // optional
+      }
+    ],
+    legend: ["Temperature"] // optional
+  };
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    // backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#fff",
+
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    labelColor: (opacity = 1) => `#333`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
 
   let date = new Date().getDate();
   let month = new Date().getMonth() + 1;
   let year = new Date().getFullYear();
   return (
-  <>
-    <View style={styles.header}>
-      <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={() => {goBack()}}>
-        <Image
+    <>
+      <View style={styles.header}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => { goBack() }}>
+          <Image
             source={icons.temperature.back}
             style={styles.icMenu}
           />
-          </TouchableOpacity>
-          <Text style={styles.txtheader}>Nhiệt độ</Text>
-    </View>
-    <View style={styles.viewDay}>
-      <TouchableOpacity
-      activeOpacity={0.7}
-      >
-        <Image
+        </TouchableOpacity>
+        <Text style={styles.txtheader}>Nhiệt độ</Text>
+      </View>
+      <View style={styles.viewDay}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+        >
+          <Image
             source={icons.temperature.back}
             style={styles.icon}
-            
+
           />
         </TouchableOpacity>
         <Text style={styles.txtDay}>{`${date}`} Tháng {`${month}`}</Text>
         <TouchableOpacity>
-        <Image
+          <Image
             source={icons.temperature.next}
             style={styles.icon}
           />
         </TouchableOpacity>
-    </View>
-    <View style={styles.view}>
-      <Text style={styles.txtBody} >Nhiệt độ cao nhất:</Text>
-      <Text style={styles.txtDisplay}> 30ºC</Text>
-    </View>
-    <View style={styles.view}>
-      <Text style={styles.txtBody} >Nhiệt độ thấp nhất:</Text>
-      <Text style={styles.txtDisplay}> 20ºC</Text>
-    </View>
-    <View style={styles.view}>
-      <Text style={styles.txtBody} >Nhiệt độ trung bình:</Text>
-      <Text style={styles.txtDisplay}> 25ºC</Text>
-    </View>
-    <Text style={styles.txtChart}>Biểu đồ</Text>
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.txtBody} >Nhiệt độ cao nhất:</Text>
+        <Text style={styles.txtDisplay}> 30ºC</Text>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.txtBody} >Nhiệt độ thấp nhất:</Text>
+        <Text style={styles.txtDisplay}> 20ºC</Text>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.txtBody} >Nhiệt độ trung bình:</Text>
+        <Text style={styles.txtDisplay}> 25ºC</Text>
+      </View>
+      <Text style={styles.txtChart}>Biểu đồ</Text>
+      {/* <View style={{flex: 1, backgroundColor: 'white'}}>
     <LineChart style={styles.chart}
             data={{dataSets:[{label: "demo", values: [{y: 2}, {y: 2}, {y: 1}]}]}}
           />
-    </View>
-  </>
+    </View> */}
+      <View>
+        <LineChart
+          onDataPointClick={({ value, dataset, getColor }) => {
+            console.log('test:', value)
+          }
+          }
+          data={data}
+          width={screenWidth}
+          height={270}
+          chartConfig={chartConfig}
+        />
+      </View>
+    </>
   );
 });
 
@@ -87,7 +116,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    
+
   },
   icMenu: {
     width: scale(24),
@@ -104,15 +133,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
-    backgroundColor:'#ffffff',
+    backgroundColor: '#ffffff',
     marginHorizontal: 120,
     marginVertical: 50,
     alignSelf: 'center'
-  
+
 
   },
   txtDay: {
-    fontSize:16
+    fontSize: 16
   },
   icon: {
     width: scale(16),
@@ -121,13 +150,13 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   view: {
-    flexDirection:'row',
+    flexDirection: 'row',
     marginHorizontal: 30,
     marginVertical: 5
   },
   txtBody: {
     fontSize: 20,
-    flex:0.6
+    flex: 0.6
   },
   txtDisplay: {
     fontSize: 20

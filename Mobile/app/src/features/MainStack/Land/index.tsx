@@ -1,11 +1,43 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { memo, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import icons from '@/assets/icons';
 import { scale } from 'react-native-size-matters';
+import { LineChart } from 'react-native-chart-kit';
 
 const Land = memo(() => {
   const { navigate } = useNavigation();
+  const { goBack } = useNavigation();
+  const screenWidth = Dimensions.get("window").width;
+  const data = {
+    labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+      "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 120, 43, 12, 45, 43, 11, 75, 34, 23, 65, 34, 21, 53, 54, 52, 46, 87, 11, 32, 76],
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+
+        strokeWidth: 2 // optional
+      }
+    ],
+    legend: ["Temperature"] // optional
+  };
+  const chartConfig = {
+    backgroundGradientFrom: "#fff",
+    // backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: "#fff",
+
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    labelColor: (opacity = 1) => `#333`,
+    strokeWidth: 2, // optional, default 3
+    barPercentage: 0.5,
+    useShadowColorFromDataset: false // optional
+  };
+
+  let date = new Date().getDate();
+  let month = new Date().getMonth() + 1;
+  let year = new Date().getFullYear();
 
   return (
   <>
@@ -47,8 +79,17 @@ const Land = memo(() => {
     </View>
     <Text style={styles.txtChart}>Biểu đồ</Text>
     <View>
-     
-    </View>
+        <LineChart
+          onDataPointClick={({ value, dataset, getColor }) => {
+            console.log('test:', value)
+          }
+          }
+          data={data}
+          width={screenWidth}
+          height={270}
+          chartConfig={chartConfig}
+        />
+      </View>
   </>
   );
 });
