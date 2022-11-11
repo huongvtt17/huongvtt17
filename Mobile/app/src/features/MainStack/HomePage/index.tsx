@@ -27,7 +27,10 @@ const HomePage = memo(() => {
   const [status, setStatus] = useState();
   const [isVisible, setIsVisible] = useState(false);
   let date = new Date()
-
+ 
+  const Onoff = () => {
+    
+  }
 
 
 
@@ -68,7 +71,7 @@ const HomePage = memo(() => {
         <TouchableOpacity
           activeOpacity={0.7}
           //onPress={() => { setIsVisible(!isVisible) }}
-          onPress={() => { navigate('ModeSetting') }}
+          onPress={() => { navigate('Menu') }}
         >
           <Image
             source={icons.homepage.menu}
@@ -86,6 +89,7 @@ const HomePage = memo(() => {
           />
         </TouchableOpacity>
       </View>
+      
       <View style={styles.control}>
         <View style={styles.view}>
           <TouchableOpacity
@@ -94,6 +98,7 @@ const HomePage = memo(() => {
             <Image
               source={icons.homepage.power}
               style={styles.icPower}
+              
             />
           </TouchableOpacity>
           <Text>{status?.FAN}</Text>

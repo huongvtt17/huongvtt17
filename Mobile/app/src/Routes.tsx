@@ -28,6 +28,7 @@ const MainStackComponent = memo(function MainStackComponent() {
       <MainStack.Screen name={'Land'} component={require('./features/MainStack/Land').default} />
       <MainStack.Screen name={'ModeSetting'} component={require('./features/MainStack/ModeSetting').default} />
       <MainStack.Screen name={'Setting'} component={require('./features/MainStack/Setting').default} />
+      <MainStack.Screen name={'Menu'} component={require('./features/MainStack/Menu').default} />
     </MainStack.Navigator>
   );
 });

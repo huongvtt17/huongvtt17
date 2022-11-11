@@ -1,6 +1,6 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useReducer, useState } from 'react';
 import { scale, ScaledSheet } from 'react-native-size-matters';
-import { View, Text, TouchableOpacity, Image, TextInput, Alert, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import icons from '@/assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -12,17 +12,23 @@ import { login } from '@/services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/redux/AccessTokenSlice';
-import { replace } from '@/utils/navigation';
+import { navigation, replace } from '@/utils/navigation';
+import auth from '@react-native-firebase/auth';
+
+
 
 
 const Login = memo(() => {
   const { navigate } = useNavigation();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [email, setEmail] = useState('');
+  const [password,setPassword] = useState('');
   const [formData, setFormData] = useState({
     phone: '',
     password: '',
   });
+
 
   const [loadingState, setLoadingState] = useState(false);
   const [errorState, setErrorState] = useState<any>({});
@@ -61,6 +67,44 @@ const Login = memo(() => {
     //   }
     // })
   }
+  // useEffect(() => {
+  //   const unsubscribe = auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       replace("MainStack")
+  //     }
+  //   })
+    
+
+  //   return unsubscribe
+  // }, [])
+
+  // const handleSignUp = () => {
+  //   auth()
+  //     .createUserWithEmailAndPassword(email,password)
+  //     .then(userCr => {
+  //       const user = useReducer.user;
+  //       console.log('Registered with:' user.email)
+  //     })
+    
+      
+  //     .then(userCredentials => {
+  //       const user = userCredentials.user;
+  //       console.log('Registered with:', user.email);
+  //     })
+  //     .catch(error => alert(error.message))
+  // }
+
+  // const handleLogin = () => {
+  //   auth()
+  //     .createUserWithEmailAndPassword(email,password)
+  //     .then()
+  //     .then(userCredentials => {
+  //       const user = userCredentials.user;
+  //       console.log('Logged in with:', user.email);
+  //     })
+  //     .catch(error => alert(error.message))
+  // }
+
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -98,7 +142,7 @@ const Login = memo(() => {
           />
         </View>
         <View style={styles.btnlogin}>
-          {/* <Button>Log In</Button> */}
+          
           <Button
             customTextStyle={{ color: 'white' }}
             color={'#0386D0'}

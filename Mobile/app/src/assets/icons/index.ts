@@ -134,6 +134,12 @@ const icons = {
     modesetting: {
         left: require('../image/ToggleLeft.png'),
         right: require('../image/ToggleRight.png'),
+    },
+    setting: {
+        auto: require('../image/auto.png'),
+        user: require('../image/user.png'),
+        moon: require('../image/Moon.png'),
+        bell: require('../image/Bell.png'),
     }
 }
 

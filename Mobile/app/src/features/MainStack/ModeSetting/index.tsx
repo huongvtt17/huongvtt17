@@ -84,13 +84,7 @@ const HomePage = memo(() => {
         <View>
           <Text style={styles.txtbody}>Quạt</Text>
           <View style={styles.viewToggle}>
-            <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isEnabled_1 ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch_1}
-              value={isEnabled_1}
-            />
+            
 
             <Text style={styles.txtInfo}>Chế độ hoạt động theo ngưỡng nhiệt độ</Text>
           </View>
@@ -120,13 +114,7 @@ const HomePage = memo(() => {
         <View>
           <Text style={styles.txtbody}>Phun sương</Text>
           <View style={styles.viewToggle}>
-          <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isEnabled_2 ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch_2}
-              value={isEnabled_2}
-            />
+          
             <Text style={styles.txtInfo}>Chế độ hoạt động theo ngưỡng độ ẩm</Text>
           </View>
           <View style={styles.viewInput}>
@@ -155,13 +143,7 @@ const HomePage = memo(() => {
         <View>
           <Text style={styles.txtbody}>Khí CO2</Text>
           <View style={styles.viewToggle}>
-          <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isEnabled_3 ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch_3}
-              value={isEnabled_3}
-            />
+          
             <Text style={styles.txtInfo}>Chế độ hoạt động theo ngưỡng nồng độ</Text>
           </View>
           <View style={styles.viewInput}>
