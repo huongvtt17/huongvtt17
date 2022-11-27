@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { memo, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Switch } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Switch, Alert } from 'react-native';
 import icons from '@/assets/icons';
 import { scale } from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux';
 import { Button } from '@/components/HOC';
-import { replace } from '@/utils/navigation';
+import { navigation, replace } from '@/utils/navigation';
+import auth from '@react-native-firebase/auth'
 
 const Setting = memo(() => {
   const { navigate } = useNavigation();
@@ -28,6 +29,27 @@ const Setting = memo(() => {
   const toggleSwitch_2 = () => setIsEnabled_2(previousState => !previousState);
   const toggleSwitch_3 = () => setIsEnabled_3(previousState => !previousState);
   const toggleSwitch_4 = () => setIsEnabled_4(previousState => !previousState);
+
+  useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged(user => {
+      if (user) {
+        email: user.email
+      }
+      else{
+        
+        replace('AuthStack')
+      }
+    })
+    
+
+    return unsubscribe
+  }, [])
+  const Signout = () => {
+    auth()
+      .signOut()
+      .catch(error => Alert.alert(error.message))
+      
+  }
   return (
     <>
       <View style={styles.header}>
@@ -54,7 +76,7 @@ const Setting = memo(() => {
               <Text>H</Text>
             </View>
           </View>
-          <Text style={styles.txtName}>Huongvtt17@gmail.com</Text>
+          <Text style={styles.txtName}>{auth().currentUser?.email}</Text>
       </View>
       
       <View style={styles.viewChoose}>
@@ -74,26 +96,17 @@ const Setting = memo(() => {
           />
       </View>
       <View style={styles.viewChoose}>
-        <Image
-          source={icons.setting.user}
-          style={styles.icUser}
-        />
-        <Text style={styles.txtChoose}>Âm thanh</Text> 
-          <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled_4 ? "#81b0ff" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
-            onValueChange={toggleSwitch_4}
-            value={isEnabled_4}
-          />
+        <TouchableOpacity
+        onPress={() => {navigate('ChangePassword')}}>
+       <Text>Doi mat khau</Text>
+       </TouchableOpacity>
       </View>
       <View style = {styles.btnLogout}>
      <Button 
       customTextStyle={{ color: 'black' }}
       color={'#E8E6E6'}
-      onPress={onLogout}
-      isLoading={loadingState}
+      onPress={Signout}
+      //isLoading={loadingState}
      >Đăng xuất</Button>
      </View>
     </>

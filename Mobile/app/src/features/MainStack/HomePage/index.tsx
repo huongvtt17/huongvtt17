@@ -27,12 +27,61 @@ const HomePage = memo(() => {
   const [status, setStatus] = useState();
   const [isVisible, setIsVisible] = useState(false);
   let date = new Date()
- 
-  const Onoff = () => {
-    
+
+  const Toggle1 = () => {
+    if (status?.FAN === "ON") {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={{ tintColor: '#37D211' }}
+
+        />
+      )
+    } else {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={styles.icPower}
+        />
+      )
+    }
   }
+  const Toggle2 = () => {
+    if (status?.PHUNSUONG === "ON") {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={{ tintColor: '#37D211' }}
 
+        />
+      )
+    } else  {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={styles.icPower}
+        />
+      )
+    }
+  }
+  const Toggle3 = () => {
+    if (status?.VAN === "ON") {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={{ tintColor: '#37D211' }}
 
+        />
+      )
+    } else{
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={styles.icPower}
+        />
+      )
+    }
+  }
 
   useEffect(() => {
     firebase
@@ -41,10 +90,8 @@ const HomePage = memo(() => {
       .ref('Sensor/')
       .on('value', (snapshot: { val: () => any; }) => {
         // console.log('snapshot', snapshot.val())
-
         setValues(snapshot.val())
       }
-
       )
   }, [])
 
@@ -55,15 +102,10 @@ const HomePage = memo(() => {
       .ref('Device/')
       .on('value', (snapshot: { val: () => any; }) => {
         // console.log('snapshot', snapshot.val())
-
         setStatus(snapshot.val())
       }
-
       )
   }, [])
-
-  
-
 
   return (
     <>
@@ -80,8 +122,8 @@ const HomePage = memo(() => {
         </TouchableOpacity>
         <Text style={styles.txtheader}>Bảng điều khiển</Text>
         <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => { navigate('Setting') }}
+          activeOpacity={0.7}
+          onPress={() => { navigate('Setting') }}
         >
           <Image
             source={icons.homepage.setting}
@@ -89,45 +131,22 @@ const HomePage = memo(() => {
           />
         </TouchableOpacity>
       </View>
-      
       <View style={styles.control}>
         <View style={styles.view}>
-          <TouchableOpacity
-          // onPress={OnOff}
-          >
-            <Image
-              source={icons.homepage.power}
-              style={styles.icPower}
-              
-            />
-          </TouchableOpacity>
+          <Toggle1 />
           <Text>{status?.FAN}</Text>
           <Text style={styles.txtbody}>Quạt</Text>
-
         </View>
         <View style={styles.view}>
-          <TouchableOpacity
-
-          >
-            <Image
-              source={icons.homepage.power}
-              style={styles.icPower}
-            />
-          </TouchableOpacity>
+          <Toggle2 />
           <Text>{status?.PHUNSUONG}</Text>
           <Text style={styles.txtbody}>Phun Sương</Text>
         </View>
         <View style={styles.view}>
-          <TouchableOpacity>
-            <Image
-              source={icons.homepage.power}
-              style={styles.icPower}
-            />
-          </TouchableOpacity>
+          <Toggle3 />
           <Text>{status?.VAN}</Text>
           <Text style={styles.txtbody}>CO2</Text>
         </View>
-
       </View>
       <View style={styles.viewDisplay}>
         <TouchableOpacity
@@ -155,21 +174,21 @@ const HomePage = memo(() => {
             style={styles.icon}
           />
           <Text style={styles.txtView}>Độ ẩm không khí</Text>
-          <Text style={styles.txtDisplay}>{values?._Humidity}%</Text>
+          <Text style={styles.txtDisplay}>{values?._Humidity.toFixed(2)} %</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.viewDisplay}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.viewControl}
-          onPress={() => { navigate('Percent') }}
+          onPress={() => { navigate('Land') }}
         >
           <Image
             source={icons.homepage.land}
             style={styles.icon}
           />
           <Text style={styles.txtView}>Độ ẩm đất</Text>
-          <Text style={styles.txtDisplay}>{values?._Moisture} %</Text>
+          <Text style={styles.txtDisplay}>{values?._Moisture.toFixed(2)} %</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.viewDisplay}>
@@ -183,7 +202,7 @@ const HomePage = memo(() => {
             style={styles.icon}
           />
           <Text style={styles.txtView}>Nồng độ CO2</Text>
-          <Text style={styles.txtDisplay}>{values?._CO2} ppm</Text>
+          <Text style={styles.txtDisplay}>{values?._CO2.toFixed(2)} ppm</Text>
         </TouchableOpacity>
       </View>
       {
@@ -265,6 +284,11 @@ const styles = ScaledSheet.create({
 
   },
   icPower: {
+    height: scale(36),
+    width: scale(36),
+
+  },
+  icPower1: {
     height: scale(36),
     width: scale(36),
 

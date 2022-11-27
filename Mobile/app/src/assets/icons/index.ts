@@ -130,6 +130,7 @@ const icons = {
     temperature: {
         back : require('../image/back.png'),
         next : require('../image/next.png'),
+        circle: require('../image/Circle.png'),
     },
     modesetting: {
         left: require('../image/ToggleLeft.png'),

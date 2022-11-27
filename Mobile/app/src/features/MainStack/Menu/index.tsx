@@ -19,7 +19,7 @@ const Menu = memo(() => {
 
   const profile: any = useSelector((state: RootState) => state.profileSlice.data);
   
-  const [checked, setChecked] = React.useState(0);
+  const [checked, setChecked] = React.useState();
   const onSave = (value: any) => {
     //console.log('formData', formData)
     firebase
@@ -27,8 +27,9 @@ const Menu = memo(() => {
       .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
       .ref('Mode/')
       .set(value)
-
     setChecked(value)
+    
+    
   }
 
   return (
@@ -51,6 +52,7 @@ const Menu = memo(() => {
             source={icons.setting.auto}
             style={styles.icMenu}
           />
+          
           <Text style={styles.txtChoose}>Chế độ auto</Text>
           <RadioButton
             value={2}
@@ -64,11 +66,14 @@ const Menu = memo(() => {
             source={icons.setting.user}
             style={styles.icUser}
           />
+          
           <Text style={styles.txtChoose}>Chế độ người dùng</Text>
+        
           <RadioButton
             value={1}
             status={checked == 1 ? 'checked' : 'unchecked'}
-            onPress={() => onSave(1)}
+            onPress={() => {onSave(1), navigate('ModeSetting')} }
+            
           />
         </View>
         <View style={styles.viewChoose}>

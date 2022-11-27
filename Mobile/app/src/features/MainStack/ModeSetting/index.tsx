@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, StatusBar, ActivityIndicator, Image, Switch, } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, StatusBar, ActivityIndicator, Image, Switch, Alert, } from 'react-native';
 import { FlatListPackageHome, FlatListUser, Spinner } from '@/components/HOC';
 import { useTranslation } from 'react-i18next';
 import { navigate } from '@/utils/navigation';
@@ -36,11 +36,21 @@ const HomePage = memo(() => {
   const toggleSwitch_1 = () => setIsEnabled_1(previousState => !previousState);
   const toggleSwitch_2 = () => setIsEnabled_2(previousState => !previousState);
   const toggleSwitch_3 = () => setIsEnabled_3(previousState => !previousState);
+
   const onChangeData = (key: any, value: any) => {
     setFormData({
       ...formData,
       [key]: value
     })
+  }
+  const onSave = () => {
+    //console.log('formData', formData)
+    firebase
+      .app()
+      .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
+      .ref('Condition/')
+      .update(formData)
+      Alert.alert('Đã lưu thành công')
   }
 
   useEffect(() => {
@@ -56,14 +66,7 @@ const HomePage = memo(() => {
       )
   }, [])
 
-  const onSave = () => {
-    //console.log('formData', formData)
-    firebase
-      .app()
-      .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
-      .ref('Condition/')
-      .update(formData)
-  }
+  
 
   return (
     <>

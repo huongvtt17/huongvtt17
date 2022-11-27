@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useReducer, useState } from 'react';
 import { scale, ScaledSheet } from 'react-native-size-matters';
-import { View, Text, TouchableOpacity, Image, TextInput, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, ImageBackground, KeyboardAvoidingView, Alert } from 'react-native';
 import icons from '@/assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/redux/AccessTokenSlice';
 import { navigation, replace } from '@/utils/navigation';
-import auth from '@react-native-firebase/auth';
+import  { firebase } from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth'
 
 
 
@@ -44,6 +45,7 @@ const Login = memo(() => {
   }
 
   const onLogin = () => {
+    
     setLoadingState(true);
     const data = {
       ...formData,
@@ -67,43 +69,42 @@ const Login = memo(() => {
     //   }
     // })
   }
-  // useEffect(() => {
-  //   const unsubscribe = auth().onAuthStateChanged(user => {
-  //     if (user) {
-  //       replace("MainStack")
-  //     }
-  //   })
-    
 
-  //   return unsubscribe
-  // }, [])
+ 
 
-  // const handleSignUp = () => {
-  //   auth()
-  //     .createUserWithEmailAndPassword(email,password)
-  //     .then(userCr => {
-  //       const user = useReducer.user;
-  //       console.log('Registered with:' user.email)
-  //     })
-    
+  const handleSignUp = () => {
+    auth()
+      .createUserWithEmailAndPassword(email,password)
+      .then(userCredentials=> {
+        const user = userCredentials.user;
+        console.log('Registered with:', user.email)
+      })
+      .catch(error =>Alert.alert(error.message))
       
-  //     .then(userCredentials => {
-  //       const user = userCredentials.user;
-  //       console.log('Registered with:', user.email);
-  //     })
-  //     .catch(error => alert(error.message))
-  // }
+  }
 
-  // const handleLogin = () => {
-  //   auth()
-  //     .createUserWithEmailAndPassword(email,password)
-  //     .then()
-  //     .then(userCredentials => {
-  //       const user = userCredentials.user;
-  //       console.log('Logged in with:', user.email);
-  //     })
-  //     .catch(error => alert(error.message))
-  // }
+  const handleLogin = () => {
+    auth()
+      .signInWithEmailAndPassword(email,password)
+      .then()
+      .then(userCredentials => {
+        const user = userCredentials.user;
+        console.log('Logged in with:', user.email);
+        
+      })
+      .catch(error => Alert.alert(error.message)) 
+  }
+  
+  const forgotPassword = () => {
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        Alert.alert("Password reset email sent")
+      })
+      .catch((error) => {
+        Alert.alert(error.message)}
+      )
+  }
 
 
   return (
@@ -120,8 +121,8 @@ const Login = memo(() => {
           <TextInput
             placeholder={'Email'}
             style={styles.txtEmail}
-          // value={keyword}
-          // onChangeText={setKeyword}
+             value={email}
+             onChangeText={text => setEmail(text)}
           />
         </View>
         <View style={styles.viewInput2}>
@@ -133,8 +134,9 @@ const Login = memo(() => {
           <TextInput
             placeholder={'Password'}
             style={styles.txtPassword}
-          // value={keyword}
-          // onChangeText={setKeyword}
+            value={password}
+            onChangeText={text => setPassword(text)}
+            secureTextEntry
           />
           <Image
             source={icons.login.hide}
@@ -146,17 +148,24 @@ const Login = memo(() => {
           <Button
             customTextStyle={{ color: 'white' }}
             color={'#0386D0'}
-            onPress={onLogin}
-            isLoading={loadingState}>
+           onPress={handleLogin}
+          //  onPress= {onLogin}
+            isLoading={loadingState}
+            >
             Log In
           </Button>
-          <TouchableOpacity>
+          <TouchableOpacity
+          onPress={forgotPassword}
+          >
             <Text style={styles.txtForgot}>Forgot password?</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.viewBottom}>
           <Text>Don't have an account?</Text>
-          <TouchableOpacity >
+          <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => navigate('Register')}
+           >
             <Text style={styles.txtRegister}> Register here</Text>
           </TouchableOpacity>
         </View>
@@ -242,3 +251,6 @@ const styles = ScaledSheet.create({
 });
 
 export default Login;
+
+
+

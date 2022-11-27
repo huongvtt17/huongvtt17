@@ -16,12 +16,13 @@ import { setToken } from '@/redux/AccessTokenSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import auth from '@react-native-firebase/auth'
-const Register = memo(() => {
+const ChangePassword = memo(() => {
     const { navigate } = useNavigation();
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [newPassword,setnewPassword] = useState('');
     const [formUserData, setFormUserData] = useState({
         //name: '',
         email: '',
@@ -73,18 +74,6 @@ const Register = memo(() => {
         })
     }
 
-    const handleSignUp = () => {
-        auth()
-          .createUserWithEmailAndPassword(email,password)
-          .then(userCredentials=> {
-            const user = userCredentials.user;
-            console.log('Registered with:', user.email)
-            Alert.alert("Dang ki thanh cong")
-        
-          })
-          .catch(error =>Alert.alert(error.message))
-         
-      }
     
 
     return (
@@ -95,18 +84,10 @@ const Register = memo(() => {
                     <Text style={styles.txtLogin}>{t('register.header')}</Text>
                     
                     <View style={styles.viewInput}>
-                        <Image source={icons.introduce.mail}
-                            style={styles.icoUsername} />
-                        <TextInput
-                            placeholder={'Nhập Email'}
-                            style={styles.txtInput}
-                        />
-                    </View>
-                    <View style={styles.viewInput}>
                         <Image source={icons.introduce.password}
                             style={styles.icoUsername} />
                         <TextInput
-                            placeholder={'Nhập mật khẩu'}
+                            placeholder={'Nhập mật khẩu hiện tại'}
                             style={styles.txtInput}
                         />
                     </View>
@@ -114,7 +95,7 @@ const Register = memo(() => {
                         <Image source={icons.introduce.password}
                             style={styles.icoUsername} />
                         <TextInput
-                            placeholder={'Nhập lại mật khẩu'}
+                            placeholder={'Nhập mật khẩu mới'}
                             style={styles.txtInput}
                         />
                     </View>
@@ -124,7 +105,7 @@ const Register = memo(() => {
                         width={width_screen * 0.4}
                         // onPress={onRegister}
                         // isLoading={loadingState}
-                        onPress = {handleSignUp}
+                        //onPress = {handleSignUp}
                         >
                         {t('register.login')}
                     </Button>
@@ -219,4 +200,4 @@ const styles = ScaledSheet.create({
     }
 });
 
-export default Register;
+export default ChangePassword;

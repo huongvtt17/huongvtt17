@@ -10,8 +10,8 @@ import { Button } from '@/components/HOC';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/redux/AccessTokenSlice';
-import { replace } from '@/utils/navigation';
-
+import { navigation, replace } from '@/utils/navigation';
+import auth from '@react-native-firebase/auth'
 const Introduce = memo(() => {
     const { navigate } = useNavigation();
     const { t } = useTranslation();
@@ -30,8 +30,19 @@ const Introduce = memo(() => {
     }
 
     useEffect(() => {
-        getToken();
+        setTimeout( () => {
+            getToken();
+        },1000)
     }, []);
+    useEffect(() => {
+        const unsubscribe = auth().onAuthStateChanged(user => {
+          if (user) {
+            replace("MainStack")
+          }
+        
+        })
+        return unsubscribe
+      }, [])
 
     return (
         <SafeAreaView style={styles.container}>

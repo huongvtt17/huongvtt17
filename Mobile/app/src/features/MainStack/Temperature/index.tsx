@@ -18,25 +18,107 @@ const Temperature = memo(() => {
   const [currentDate, setCurrentDate] = useState(new Date().getTime());
   const [values, setValues] = useState();
   const [values1, setValues1] = useState();
-  //const [list, setList] = useState([ 53, 54, 52, 46, 87, 11, 32, 76]);
-  const [list, setList] = useState([32,22,32,41])
-  
-  useEffect(() => {
+  const [list, setList] = useState([0])
 
+  useEffect(() => {
     firebase
       .app()
       .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
-      .ref(`Data/${moment(currentDate).format('DD-MM-YYYY')}/01:00:00`)
-      //.ref('Data/01-11-2022/10:21:19')
+      .ref(`Data/${moment(currentDate).format('DD-MM-YYYY')}`)
       .on('value', (snapshot: { val: () => any; }) => {
-       // console.log('snapshot', snapshot.val())
-        setValues(snapshot.val())
-      }
+        //setList(snapshot.val())
+        let objs = snapshot.val()
 
+        if (objs) {
+          let keyList = Object.keys(objs)
+          let newArr = []
+
+          for (let i = 0; i < keyList.length; i++) {
+            newArr.unshift({
+              time: keyList[i],
+              data: objs[keyList[i]]
+            })
+          }
+          
+
+          let newGroup = [];
+          for (let i = 0; i < 24; i++) {
+            let group = newArr.filter((ele: any) => ele.time.substring(0, 2) == i)
+
+
+            if (group && group.length > 0) {
+              var max = group.sort((a, b): any => {
+                return new Date('2022-11-20T' + a.time).getTime() - new Date('2022-11-20T' + b.time).getTime();
+              });
+              newGroup.push(max[0]?.data?._Temperature)
+            } else {
+              newGroup.push(0)
+            }
+          }
+          //console.log('newGroup', newGroup)
+          setList(newGroup)
+        } else {
+          let arr = []
+          for (let i = 0; i < 24; i++){
+            arr.push(0)
+          }
+          setList(arr)
+        }
+      }
       )
+
+  }, [currentDate])
+  //console.log(list);
   
-  }, [])
-  
+  const Chart = () => {
+    let arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    console.log('abc',JSON.stringify(list));
+    
+    if(JSON.stringify(list) == JSON.stringify(arr)){
+      
+      return(
+        <View style={styles.viewIcon}>
+          <Text style= {{fontSize: 20, marginBottom: 70}}>Chưa có dữ liệu</Text>
+          <Image
+          source={icons.temperature.circle}
+          style={{height:scale(100), width: scale(100)}}
+        />
+        </View>
+      )
+    }
+    else{
+      return(
+        <>
+        <View style={styles.view}>
+        <Text style={styles.txtBody} >Nhiệt độ cao nhất:</Text>
+        <Text style={styles.txtDisplay}> 30ºC</Text>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.txtBody} >Nhiệt độ thấp nhất:</Text>
+        <Text style={styles.txtDisplay}> 20ºC</Text>
+      </View>
+      <View style={styles.view}>
+        <Text style={styles.txtBody} >Nhiệt độ trung bình:</Text>
+        <Text style={styles.txtDisplay}> 25ºC</Text>
+      </View>
+        <Text style={styles.txtChart}>Biểu đồ</Text>
+        <View>
+        <LineChart
+          onDataPointClick={({ value, dataset, getColor }) => {
+            console.log('test:', value)
+          }
+          }
+          data={data}
+          width={screenWidth}
+          height={300}
+          chartConfig={chartConfig}
+          yAxisInterval={4}
+        />
+      </View>
+        </>
+      )
+    }
+  }
   const data = {
     labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
       "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
@@ -65,34 +147,9 @@ const Temperature = memo(() => {
 
   const onPressback = () => {
     setCurrentDate(prev => prev - 86400000)
-    firebase
-    .app()
-    .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
-    .ref(`Data/${moment(currentDate-86400000).format('DD-MM-YYYY')}/01:00:00`)
-    //.ref('Data/01-11-2022/10:21:19')
-    .on('value', (snapshot: { val: () => any; }) => {
-      console.log('snapshot', snapshot.val())
-      setValues(snapshot.val())
-      
-    })
-    
-    
-    setList([ values?._Temperature,values1?._Temperature,32,41])
-    //setList([ values?._Temperature,22,32,41])
-   
   }
   const onPressnext = () => {
     setCurrentDate(prev => prev + 86400000)
-    firebase
-    .app()
-    .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
-    .ref(`Data/${moment(currentDate+86400000).format('DD-MM-YYYY')}/01:00:00`)
-    //.ref('Data/01-11-2022/10:21:19')
-    .on('value', (snapshot: { val: () => any; }) => {
-      console.log('snapshot', snapshot.val())
-      setValues(snapshot.val())
-    })
-    
   }
 
   return (
@@ -111,7 +168,6 @@ const Temperature = memo(() => {
       <View style={styles.viewDay}>
         <TouchableOpacity
           activeOpacity={0.7}
-          //onPress={() => setList([1,2])}
           onPress={onPressback}
         >
           <Image
@@ -121,36 +177,26 @@ const Temperature = memo(() => {
         </TouchableOpacity>
         <Text style={styles.txtDay}>{moment(currentDate).format('DD-MM-YYYY')}</Text>
         <TouchableOpacity
-           activeOpacity={0.7}
+          activeOpacity={0.7}
           //onPress={() => setList([1,2])}
           onPress={onPressnext}
-          >
+        >
           <Image
             source={icons.temperature.next}
             style={styles.icon}
           />
         </TouchableOpacity>
       </View>
-      <Text style={{ color: 'black' }}>{values?._Temperature} abc</Text>
-      <Text style={{ color: 'black' }}>{moment(currentDate).format('DD-MM-YYYY')}</Text>
-      <View style={styles.view}>
-        <Text style={styles.txtBody} >Nhiệt độ cao nhất:</Text>
-        <Text style={styles.txtDisplay}> 30ºC</Text>
-      </View>
-      <View style={styles.view}>
-        <Text style={styles.txtBody} >Nhiệt độ thấp nhất:</Text>
-        <Text style={styles.txtDisplay}> 20ºC</Text>
-      </View>
-      <View style={styles.view}>
-        <Text style={styles.txtBody} >Nhiệt độ trung bình:</Text>
-        <Text style={styles.txtDisplay}> 25ºC</Text>
-      </View>
-      <Text style={styles.txtChart}>Biểu đồ</Text>
+      
+      
+      
+     
       {/* <View style={{flex: 1, backgroundColor: 'white'}}>
     <LineChart style={styles.chart}
             data={{dataSets:[{label: "demo", values: [{y: 2}, {y: 2}, {y: 1}]}]}}
           />
     </View> */}
+     {/* <Text style={styles.txtChart}>Biểu đồ</Text>
       <View>
         <LineChart
           onDataPointClick={({ value, dataset, getColor }) => {
@@ -161,8 +207,10 @@ const Temperature = memo(() => {
           width={screenWidth}
           height={270}
           chartConfig={chartConfig}
+          yAxisInterval={4}
         />
-      </View>
+      </View> */}
+      <Chart/>
     </>
   );
 });
@@ -195,20 +243,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     backgroundColor: '#ffffff',
-    marginHorizontal: 120,
     marginVertical: 50,
     alignSelf: 'center'
 
 
   },
   txtDay: {
-    fontSize: 16
+    fontSize: 20
   },
   icon: {
     width: scale(16),
     height: scale(16),
     marginHorizontal: 20,
-    marginVertical: 10,
+    marginVertical: 20,
   },
   view: {
     flexDirection: 'row',
@@ -229,7 +276,14 @@ const styles = StyleSheet.create({
   },
   chart: {
     flex: 1
-  }
+  },
+  viewIcon: {
+    alignItems: 'center',
+    marginVertical: 60,
+    alignSelf: 'center',
+   
+  },
+ 
 });
 
 
