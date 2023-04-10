@@ -9,7 +9,6 @@ import icons from '@/assets/icons';
 import { height_screen, width_screen } from '@/utils';
 import { followingClinic, getProducts, getProfile, getClinics, getVaccines } from '@/services';
 import { setProfile } from '@/redux/ProfileSlice';
-import { useIsFocused } from '@react-navigation/core';
 import { font, font_size } from '@/configs/fonts';
 import { scale, ScaledSheet } from 'react-native-size-matters';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
@@ -20,6 +19,7 @@ import { firebase } from '@react-native-firebase/database';
 import { Database, getDatabase, ref, set } from "firebase/database";
 import { Button } from '@/components/HOC';
 import { useNavigation } from '@react-navigation/native';
+import { sample } from 'lodash';
 
 
 const HomePage = memo(() => {
@@ -34,8 +34,7 @@ const HomePage = memo(() => {
   const [isEnabled_3, setIsEnabled_3] = useState(false);
 
   const toggleSwitch_1 = () => setIsEnabled_1(previousState => !previousState);
-  const toggleSwitch_2 = () => setIsEnabled_2(previousState => !previousState);
-  const toggleSwitch_3 = () => setIsEnabled_3(previousState => !previousState);
+  
 
   const onChangeData = (key: any, value: any) => {
     setFormData({
@@ -50,7 +49,7 @@ const HomePage = memo(() => {
       .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
       .ref('Condition/')
       .update(formData)
-      Alert.alert('Đã lưu thành công')
+    Alert.alert('Đã lưu thành công')
   }
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const HomePage = memo(() => {
       )
   }, [])
 
-  
+
 
   return (
     <>
@@ -80,15 +79,19 @@ const HomePage = memo(() => {
             style={styles.icBack}
           />
         </TouchableOpacity>
-        <Text style={styles.txtheader}>Cài đặt chế độ</Text>
+        <Text style={styles.txtheader}>CÀI ĐẶT NGƯỠNG</Text>
       </View>
 
       <View style={styles.viewControl}>
         <View>
-          <Text style={styles.txtbody}>Quạt</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+            <Image
+              source={icons.modesetting.fan}
+              style={{ height: scale(50), width: scale(50), marginHorizontal: 20, marginVertical: 10 }}
+            />
+            <Text style={styles.txtbody}>Quạt</Text>
+          </View>
           <View style={styles.viewToggle}>
-            
-
             <Text style={styles.txtInfo}>Chế độ hoạt động theo ngưỡng nhiệt độ</Text>
           </View>
           <View style={styles.viewInput}>
@@ -115,9 +118,15 @@ const HomePage = memo(() => {
 
       <View style={styles.viewControl}>
         <View>
-          <Text style={styles.txtbody}>Phun sương</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={icons.modesetting.phunsuong}
+              style={{ height: scale(50), width: scale(50),marginHorizontal: 20, marginVertical: 10  }}
+            />
+            <Text style={styles.txtbody}>Phun sương</Text>
+          </View>
           <View style={styles.viewToggle}>
-          
+
             <Text style={styles.txtInfo}>Chế độ hoạt động theo ngưỡng độ ẩm</Text>
           </View>
           <View style={styles.viewInput}>
@@ -144,9 +153,15 @@ const HomePage = memo(() => {
 
       <View style={styles.viewControl}>
         <View>
-          <Text style={styles.txtbody}>Khí CO2</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={icons.modesetting.van}
+              style={{ height: scale(56), width: scale(56),marginHorizontal: 20, marginVertical: 10  }}
+            />
+            <Text style={styles.txtbody}>Khí CO2</Text>
+          </View>
           <View style={styles.viewToggle}>
-          
+
             <Text style={styles.txtInfo}>Chế độ hoạt động theo ngưỡng nồng độ</Text>
           </View>
           <View style={styles.viewInput}>
@@ -186,7 +201,8 @@ const styles = ScaledSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 40
+    marginBottom: 20,
+    marginTop: 5
 
   },
   icBack: {
@@ -214,14 +230,15 @@ const styles = ScaledSheet.create({
   viewToggle: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: '20@ms'
+    marginHorizontal: '20@ms',
 
   },
   icToggle: {
 
   },
   txtbody: {
-    fontSize: 24
+    fontSize: 26,
+
   },
 
   viewInput: {
@@ -231,7 +248,7 @@ const styles = ScaledSheet.create({
     marginBottom: 20
   },
   txtInfo: {
-    fontSize: 16
+    fontSize: 17
   },
   viewInput1: {
     borderRadius: 5,
@@ -241,6 +258,7 @@ const styles = ScaledSheet.create({
     height: 45,
     width: 60,
     alignItems: 'center',
+    
 
 
   },
@@ -249,7 +267,7 @@ const styles = ScaledSheet.create({
     fontSize: 16,
   },
   btnSave: {
-    marginTop: '30@ms',
+    marginTop: '20@ms',
     marginHorizontal: '50@ms',
   }
 });

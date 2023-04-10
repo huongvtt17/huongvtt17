@@ -11,11 +11,9 @@ import { firebase } from '@react-native-firebase/database';
 import { RadioButton } from 'react-native-paper';
 
 
-
 const Menu = memo(() => {
   const { navigate } = useNavigation();
   const { goBack } = useNavigation();
-  let day = new Date();
 
   const profile: any = useSelector((state: RootState) => state.profileSlice.data);
   
@@ -28,9 +26,16 @@ const Menu = memo(() => {
       .ref('Mode/')
       .set(value)
     setChecked(value)
-    
-    
   }
+  useEffect(() =>{
+    firebase
+    .app()
+    .database('https://esp32-mushroom-default-rtdb.asia-southeast1.firebasedatabase.app/')
+    .ref('Mode/')
+    .on('value', (snapshot: { val: () => any; }) => {
+      setChecked(snapshot.val())
+    })
+  }, [])
 
   return (
     <>
@@ -43,16 +48,15 @@ const Menu = memo(() => {
             style={styles.icMenu}
           />
         </TouchableOpacity>
-        <Text style={styles.txtheader}>Menu</Text>
+        <Text style={styles.txtheader}>CHỌN CHẾ ĐỘ</Text>
       </View>
       <View style={{ marginTop: 30 }}>
         <View style={styles.viewChoose}>
-
           <Image
             source={icons.setting.auto}
-            style={styles.icMenu}
+            style={styles.icUser }
+       
           />
-          
           <Text style={styles.txtChoose}>Chế độ auto</Text>
           <RadioButton
             value={2}
@@ -78,7 +82,7 @@ const Menu = memo(() => {
         </View>
         <View style={styles.viewChoose}>
           <Image
-            source={icons.setting.user}
+            source={icons.setting.no}
             style={styles.icUser}
           />
           <Text style={styles.txtChoose}>Không điều khiển</Text>
@@ -105,13 +109,15 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 5
 
   },
   icMenu: {
-    width: scale(24),
-    height: scale(24),
+    width: scale(30),
+    height: scale(30),
     marginHorizontal: 20,
-    marginVertical: 10
+    marginVertical: 10,
+    tintColor: 'black'
   },
   txtheader: {
     //textAlign: 'center',
@@ -157,19 +163,25 @@ const styles = StyleSheet.create({
     marginVertical: 15
   },
   icUser: {
-    width: scale(32),
-    height: scale(32),
+    width: scale(40),
+    height: scale(40),
     marginHorizontal: 20,
-    marginVertical: 10
+    marginVertical: 10,
+    tintColor: '#0386D0'
   },
   viewChoose: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 30,
+    marginVertical: 10,
+    borderRadius: 20,
+    borderColor: '#0386D0',
+    backgroundColor: '#f0e68c',
+    height: 80
 
   },
   txtChoose: {
-    fontSize: 20,
+    fontSize: 22,
     flex: 0.95
   },
   btnLogout: {

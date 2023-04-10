@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useReducer, useState } from 'react';
 import { scale, ScaledSheet } from 'react-native-size-matters';
-import { View, Text, TouchableOpacity, Image, TextInput, ImageBackground, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, ImageBackground, KeyboardAvoidingView, Alert, Dimensions } from 'react-native';
 import icons from '@/assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import { setToken } from '@/redux/AccessTokenSlice';
 import { navigation, replace } from '@/utils/navigation';
 import  { firebase } from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth'
+import { black } from 'react-native-paper/lib/typescript/styles/colors';
 
 
 
@@ -33,6 +34,8 @@ const Login = memo(() => {
 
   const [loadingState, setLoadingState] = useState(false);
   const [errorState, setErrorState] = useState<any>({});
+  const screenHeight = Dimensions.get('window').height;
+  const screenWidth = Dimensions.get('window').width;
 
   const updateFormData = (key: string, value: any) => {
     setFormData((preData) => {
@@ -52,22 +55,6 @@ const Login = memo(() => {
       phone: formData.phone ? (formData.phone.charAt(0) == '0' ? formData.phone : `0${formData.phone}`) : ''
     };
     replace('MainStack');
-    // login(data, async (res: any) => {
-    //   setLoadingState(false);
-    //   if (res.code == 1 && res.data?.access_token) {    // Login success
-    //     dispatch(setToken(res.data.access_token));
-    //     replace('MainStack');
-    //     await AsyncStorage.setItem('access_token', res.data.access_token);
-    //   } else {
-    //     if (res.code == 0) {
-    //       if (res.data?.error) {
-    //         setErrorState(res.data.error);
-    //       } else {
-    //         Alert.alert('Thông báo', res.message);
-    //       }
-    //     }
-    //   }
-    // })
   }
 
  
@@ -92,14 +79,16 @@ const Login = memo(() => {
         console.log('Logged in with:', user.email);
         
       })
-      .catch(error => Alert.alert(error.message)) 
+      .catch( error => {
+         Alert.alert(error.message)}) 
+      
   }
   
   const forgotPassword = () => {
     auth()
       .sendPasswordResetEmail(email)
       .then(() => {
-        Alert.alert("Password reset email sent")
+        Alert.alert("Mật khẩu gửi về email ")
       })
       .catch((error) => {
         Alert.alert(error.message)}
@@ -110,9 +99,7 @@ const Login = memo(() => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <ImageBackground style={styles.viewAll} source={icons.login.background} resizeMode={'stretch'}>
-        <Text style={styles.txtLogin}>Login</Text>
-        <Text style={styles.txtContent}>By signing in you are agreeing our Term and privacy policy</Text>
-
+        <Text style={styles.txtLogin}>ĐĂNG NHẬP</Text>
         <View style={styles.viewInput1}>
           <Image
             source={icons.login.email}
@@ -120,7 +107,7 @@ const Login = memo(() => {
           />
           <TextInput
             placeholder={'Email'}
-            style={styles.txtEmail}
+            style={{fontSize: 21, marginLeft: 10, color: 'black'}}
              value={email}
              onChangeText={text => setEmail(text)}
           />
@@ -132,41 +119,41 @@ const Login = memo(() => {
           />
           
           <TextInput
-            placeholder={'Password'}
-            style={styles.txtPassword}
-            value={password}
-            onChangeText={text => setPassword(text)}
+            placeholder={'Mật khẩu'}
+            style={{fontSize: 21, marginLeft: 10,color: 'black'}}
+             value={password}
+             onChangeText={text => setPassword(text)}
             secureTextEntry
           />
-          <Image
+          {/* <Image
             source={icons.login.hide}
             style={styles.icHide}
-          />
+          /> */}
         </View>
         <View style={styles.btnlogin}>
           
           <Button
             customTextStyle={{ color: 'white' }}
             color={'#0386D0'}
-           onPress={handleLogin}
-          //  onPress= {onLogin}
+            onPress={handleLogin}
+            //onPress= {onLogin}
             isLoading={loadingState}
             >
-            Log In
+            Đăng Nhập
           </Button>
           <TouchableOpacity
           onPress={forgotPassword}
           >
-            <Text style={styles.txtForgot}>Forgot password?</Text>
+            <Text style={styles.txtForgot}>Quên mật khẩu?</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.viewBottom}>
-          <Text>Don't have an account?</Text>
+          <Text style={{fontSize:18}}>Bạn có tài khoản chưa?</Text>
           <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => navigate('Register')}
            >
-            <Text style={styles.txtRegister}> Register here</Text>
+            <Text style={styles.txtRegister}> Đăng ký</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -180,7 +167,8 @@ const styles = ScaledSheet.create({
     backgroundColor: 'white'
   },
   viewAll: {
-    flex: 1
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
   },
   txtLogin: {
     fontSize: scale(24),
@@ -196,10 +184,10 @@ const styles = ScaledSheet.create({
     marginLeft: '90@ms',
     marginRight: '90@ms'
   },
-  txtEmail: {
-    fontSize: scale(16),
-    color: 'black'
-  },
+  // txtEmail: {
+  //   fontSize: scale(20),
+  //  // color: 'black'
+  // },
   icEmail: {
     width: scale(24),
     height: scale(24)
@@ -207,16 +195,13 @@ const styles = ScaledSheet.create({
   icHide: {
     width: scale(24),
     height: scale(24),
-    marginLeft: 190,
+    marginLeft: 150,
   },
-  txtPassword: {
-    fontSize: scale(16),
-    color: 'black'
-  },
+ 
   viewInput1: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '100@ms',
+    marginTop: '70@ms',
     marginHorizontal: '40@ms',
     borderBottomWidth: 1,
     borderColor: '#A6A6A6'
@@ -237,7 +222,8 @@ const styles = ScaledSheet.create({
   txtForgot:{
     marginVertical:'10@ms',
     color: '#0386D0',
-   
+    fontSize: 18,
+    marginTop :40
   },
   viewBottom:{
     flexDirection: 'row',
@@ -245,7 +231,8 @@ const styles = ScaledSheet.create({
 
   },
   txtRegister: {
-    color: '#0386D0'
+    color: '#0386D0',
+    fontSize: 18
   }
   
 });

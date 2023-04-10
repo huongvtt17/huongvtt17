@@ -9,6 +9,8 @@ import { RootState } from '@/redux';
 import { Button } from '@/components/HOC';
 import { navigation, replace } from '@/utils/navigation';
 import auth from '@react-native-firebase/auth'
+import { random } from 'lodash';
+import { Colors } from 'react-native-paper';
 
 const Setting = memo(() => {
   const { navigate } = useNavigation();
@@ -35,12 +37,11 @@ const Setting = memo(() => {
       if (user) {
         email: user.email
       }
-      else{
-        
+      else {
         replace('AuthStack')
       }
     })
-    
+
 
     return unsubscribe
   }, [])
@@ -48,8 +49,9 @@ const Setting = memo(() => {
     auth()
       .signOut()
       .catch(error => Alert.alert(error.message))
-      
+
   }
+
   return (
     <>
       <View style={styles.header}>
@@ -61,54 +63,61 @@ const Setting = memo(() => {
             style={styles.icMenu}
           />
         </TouchableOpacity>
-        <Text style={styles.txtheader}>Cài đặt</Text>
+        <Text style={styles.txtheader}>CÀI ĐẶT</Text>
       </View>
       <View style={styles.viewAvatar}>
         <View style={{
-          height:100, 
-          width:100, 
-          backgroundColor:'white',
-          borderRadius:50,
+          height: 150,
+          width: 150,
+          backgroundColor: 'orange',
+          borderRadius: 75,
           marginTop: 30,
+          justifyContent: 'center',
+          alignContent: 'center'
+        }}>
+          <View style={{
+            alignSelf: 'center'
           }}>
-            <View style={{
-          alignSelf: 'center'}}>
-              <Text>H</Text>
-            </View>
+            <Text style={{ fontSize: 40, color: 'white', fontWeight: 'bold' }}>{auth().currentUser?.email?.charAt(0).toLocaleUpperCase()}</Text>
           </View>
-          <Text style={styles.txtName}>{auth().currentUser?.email}</Text>
+        </View>
+        <Text style={styles.txtName}>{auth().currentUser?.email}</Text>
       </View>
-      
-      <View style={styles.viewChoose}>
-        <Image
-          source={icons.setting.moon}
-          style={styles.icUser}
-        />
-        <Text style={styles.txtChoose}>Chế độ tối</Text> 
-          <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled_3 ? "#81b0ff" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
-            onValueChange={toggleSwitch_3}
-            value={isEnabled_3}
-            
-          />
-      </View>
+
       <View style={styles.viewChoose}>
         <TouchableOpacity
-        onPress={() => {navigate('ChangePassword')}}>
-       <Text>Doi mat khau</Text>
-       </TouchableOpacity>
+          onPress={() => { navigate('ChangePassword') }}>
+          <Text
+            style={{
+              fontSize: 22,
+              textAlign: 'center',
+              marginHorizontal: 20,
+              marginVertical: 20
+            }}>
+            Đổi mật khẩu</Text>
+        </TouchableOpacity>
       </View>
-      <View style = {styles.btnLogout}>
-     <Button 
-      customTextStyle={{ color: 'black' }}
-      color={'#E8E6E6'}
-      onPress={Signout}
-      //isLoading={loadingState}
-     >Đăng xuất</Button>
-     </View>
+      <View style={styles.viewChoose1}>
+        <TouchableOpacity
+          onPress={Signout}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: 'center'
+            }}
+          >
+            Đăng xuất</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.btnLogout}>
+        <Button
+          customTextStyle={{ color: 'black' }}
+          color={'#E8E6E6'}
+          //onPress={Signout}
+          isLoading={loadingState}
+        >Đăng xuất</Button>
+      </View>
     </>
   );
 });
@@ -117,13 +126,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    
+
     alignItems: 'center',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-
+    marginTop: 5
   },
   icMenu: {
     width: scale(24),
@@ -173,8 +182,8 @@ const styles = StyleSheet.create({
     marginVertical: 30
   },
   txtName: {
-    fontSize: 20,
-    marginVertical:15
+    fontSize: 22,
+    marginVertical: 15
   },
   icUser: {
     width: scale(32),
@@ -183,18 +192,20 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   viewChoose: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 10
+    marginHorizontal: 30,
+    marginVertical: 30,
+    borderBottomWidth: 1,
+    borderTopWidth: 1
   },
+
   txtChoose: {
     fontSize: 20,
     flex: 0.95
   },
   btnLogout: {
-   marginHorizontal: 80,
-   marginTop: 350
-   
+    marginHorizontal: 80,
+    marginTop: 350
+
   }
 
 

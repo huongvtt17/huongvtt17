@@ -9,6 +9,7 @@ import { Dimensions } from "react-native";
 import { firebase } from '@react-native-firebase/database';
 import { current } from '@reduxjs/toolkit';
 import moment from 'moment';
+import { Svg, Text as TextSVG, Rect } from 'react-native-svg';
 
 
 const Percent = memo(() => {
@@ -19,6 +20,8 @@ const Percent = memo(() => {
   const [values, setValues] = useState();
   const [values1, setValues1] = useState();
   const [list, setList] = useState([0])
+  const [maxValue, setmaxValue] = useState('');
+  const [minValue, setminValue] = useState('');
 
   useEffect(() => {
     firebase
@@ -39,7 +42,7 @@ const Percent = memo(() => {
               data: objs[keyList[i]]
             })
           }
-          
+
 
           let newGroup = [];
           for (let i = 0; i < 24; i++) {
@@ -50,7 +53,7 @@ const Percent = memo(() => {
               var max = group.sort((a, b): any => {
                 return new Date('2022-11-20T' + a.time).getTime() - new Date('2022-11-20T' + b.time).getTime();
               });
-              newGroup.push(max[0]?.data?._CO2)
+              newGroup.push(max[0]?.data?._CO2 || 0)
             } else {
               newGroup.push(0)
             }
@@ -59,7 +62,7 @@ const Percent = memo(() => {
           setList(newGroup)
         } else {
           let arr = []
-          for (let i = 0; i < 24; i++){
+          for (let i = 0; i < 24; i++) {
             arr.push(0)
           }
           setList(arr)
@@ -69,52 +72,106 @@ const Percent = memo(() => {
 
   }, [currentDate])
   //console.log(list);
-  
+
+  useEffect(() => {
+    let max_val = list.reduce(function (accumulator, element) {
+      return (accumulator > element) ? accumulator : element
+    });
+    setmaxValue(max_val.toFixed(2).toString());
+
+    let min_val = list.reduce(function (accumulator, element) {
+      return (accumulator < element) ? accumulator : element
+    });
+    setminValue(min_val.toFixed(2).toString());
+  })
+
   const Chart = () => {
-    let arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    console.log('abc',JSON.stringify(list));
-    
-    if(JSON.stringify(list) == JSON.stringify(arr)){
-      
-      return(
+    let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    //console.log('abc', JSON.stringify(list));
+    let [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0, visible: false, value: 0 })
+    if (JSON.stringify(list) == JSON.stringify(arr)) {
+
+      return (
         <View style={styles.viewIcon}>
-          <Text style= {{fontSize: 20, marginBottom: 70}}>Chưa có dữ liệu</Text>
+          <Text style={{ fontSize: 20, marginBottom: 70 }}>Chưa có dữ liệu</Text>
           <Image
-          source={icons.temperature.circle}
-          style={{height:scale(100), width: scale(100)}}
-        />
+            source={icons.temperature.circle}
+            style={{ height: scale(100), width: scale(100) }}
+          />
         </View>
       )
     }
-    else{
-      return(
+    else {
+      return (
         <>
-        <View style={styles.view}>
-        <Text style={styles.txtBody} >Nhiệt độ cao nhất:</Text>
-        <Text style={styles.txtDisplay}> 30ºC</Text>
-      </View>
-      <View style={styles.view}>
-        <Text style={styles.txtBody} >Nhiệt độ thấp nhất:</Text>
-        <Text style={styles.txtDisplay}> 20ºC</Text>
-      </View>
-      <View style={styles.view}>
-        <Text style={styles.txtBody} >Nhiệt độ trung bình:</Text>
-        <Text style={styles.txtDisplay}> 25ºC</Text>
-      </View>
-        <Text style={styles.txtChart}>Biểu đồ</Text>
-        <View>
-        <LineChart
-          onDataPointClick={({ value, dataset, getColor }) => {
-            console.log('test:', value)
-          }
-          }
-          data={data}
-          width={screenWidth}
-          height={300}
-          chartConfig={chartConfig}
-          yAxisInterval={4}
-        />
-      </View>
+          <View style={styles.view}>
+            <Text style={styles.txtBody} >Nồng độ cao nhất:</Text>
+            <Text style={styles.txtDisplay}> {maxValue} ppm</Text>
+          </View>
+          <View style={styles.view}>
+            <Text style={styles.txtBody} >Nồng độ thấp nhất:</Text>
+            <Text style={styles.txtDisplay}> {minValue} ppm</Text>
+          </View>
+          <Text style={styles.txtChart}>Biểu đồ</Text>
+          <View>
+            <LineChart
+              onDataPointClick={(data) => {
+                if (data) {
+                  let isSamePoint = (tooltipPos.x === data.x
+                    && tooltipPos.y === data.y)
+
+                  isSamePoint ? setTooltipPos((previousState) => {
+                    return {
+                      ...previousState,
+                      value: data.value,
+                      visible: !previousState.visible
+                    }
+                  })
+                    :
+                    setTooltipPos({ x: data.x - 7, value: data.value, y: data.y - 50, visible: true });
+                }
+              }
+              }
+              decorator={() => {
+                return tooltipPos.visible ?
+                  <View>
+                    <Svg>
+                      <Rect x={tooltipPos.x - 15}
+                        y={tooltipPos.y + 10}
+                        width="40"
+                        height="30"
+                        fill="#f0f8ff" />
+                      <TextSVG
+                        x={tooltipPos.x + 5}
+                        y={tooltipPos.y + 30}
+                        fill="#333"
+                        fontSize="16"
+                        fontWeight="bold"
+                        textAnchor="middle">
+                        {tooltipPos.value}
+                      </TextSVG>
+                    </Svg>
+                  </View> : null
+              }}
+              data={{
+                labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+                  "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+                datasets: [
+                  {
+                    data: [...list],
+                    color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+            
+                    strokeWidth: 2 // optional
+                  }
+                ],
+                legend: ["CO2"], // optional
+              }}
+              width={screenWidth}
+              height={350}
+              chartConfig={chartConfig}
+              yAxisInterval={4}
+            />
+          </View>
         </>
       )
     }
@@ -130,7 +187,7 @@ const Percent = memo(() => {
         strokeWidth: 2 // optional
       }
     ],
-    legend: ["Temperature"] // optional
+    legend: ["CO2"] // optional
   };
   const chartConfig = {
     backgroundGradientFrom: "#fff",
@@ -163,7 +220,7 @@ const Percent = memo(() => {
             style={styles.icMenu}
           />
         </TouchableOpacity>
-        <Text style={styles.txtheader}>Nồng độ CO2</Text>
+        <Text style={styles.txtheader}>NỒNG ĐỘ CO2</Text>
       </View>
       <View style={styles.viewDay}>
         <TouchableOpacity
@@ -176,41 +233,22 @@ const Percent = memo(() => {
           />
         </TouchableOpacity>
         <Text style={styles.txtDay}>{moment(currentDate).format('DD-MM-YYYY')}</Text>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          //onPress={() => setList([1,2])}
-          onPress={onPressnext}
-        >
-          <Image
-            source={icons.temperature.next}
-            style={styles.icon}
-          />
-        </TouchableOpacity>
+        {
+          moment(currentDate).format('DD-MM-YYYY') != moment(new Date()).format('DD-MM-YYYY') ?
+            <TouchableOpacity
+              activeOpacity={0.7}
+              //onPress={() => setList([1,2])}
+              onPress={onPressnext}
+            >
+              <Image
+                source={icons.temperature.next}
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+            : <View style={styles.button}/>
+        }
       </View>
-      
-      
-      
-     
-      {/* <View style={{flex: 1, backgroundColor: 'white'}}>
-    <LineChart style={styles.chart}
-            data={{dataSets:[{label: "demo", values: [{y: 2}, {y: 2}, {y: 1}]}]}}
-          />
-    </View> */}
-     {/* <Text style={styles.txtChart}>Biểu đồ</Text>
-      <View>
-        <LineChart
-          onDataPointClick={({ value, dataset, getColor }) => {
-            console.log('test:', value)
-          }
-          }
-          data={data}
-          width={screenWidth}
-          height={270}
-          chartConfig={chartConfig}
-          yAxisInterval={4}
-        />
-      </View> */}
-      <Chart/>
+      <Chart />
     </>
   );
 });
@@ -225,7 +263,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-
+    marginTop: 5
   },
   icMenu: {
     width: scale(24),
@@ -245,8 +283,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     marginVertical: 50,
     alignSelf: 'center'
-
-
+  },
+  button: {
+    width: scale(16),
+    height: scale(16),
+    marginHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: 'white'
   },
   txtDay: {
     fontSize: 20
@@ -281,9 +324,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 60,
     alignSelf: 'center',
-   
+
   },
- 
+
 });
 
 

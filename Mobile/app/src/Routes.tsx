@@ -20,8 +20,6 @@ const MainStackComponent = memo(function MainStackComponent() {
   return (
     <MainStack.Navigator initialRouteName={'MainStack'} headerMode={'none'}>
       <MainStack.Screen name={'MainStack'} component={require('./features/MainStack').default} />
-      <MainStack.Screen name={'UpdateInfo'} component={require('./features/MainStack/Account/UpdateInfo').default} />
-      <MainStack.Screen name={'OtherAccount'} component={require('./features/MainStack/Account/OtherAccount').default} />
       <MainStack.Screen name={'Temperature'} component={require('./features/MainStack/Temperature').default} />
       <MainStack.Screen name={'Air'} component={require('./features/MainStack/Air').default} />
       <MainStack.Screen name={'Percent'} component={require('./features/MainStack/Percent').default} />

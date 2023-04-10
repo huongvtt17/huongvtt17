@@ -1,13 +1,13 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
-import { View, Text, TouchableOpacity, Image, TextInput, Alert, Platform, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, Alert, Platform, ImageBackground, } from 'react-native';
 import icons from '@/assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { height_screen, width_screen } from '@/utils';
-import { Button } from '@/components/HOC';
 import { font, font_size } from '@/configs/fonts';
 import { register, cities, districts } from '@/services';
+import { Button } from '@/components/HOC';
 import moment from 'moment';
 import { replace } from '@/utils/navigation';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -41,56 +41,27 @@ const Register = memo(() => {
         });
     }
 
-    const onRegister = () => {
-        setLoadingState(true);
-        register(formUserData, async (res: any) => {
-            setLoadingState(false);
-            // if (res.code == 1) {
-            //     Alert.alert('Thông báo', 'Đăng ký thành công, bạn hãy sử dụng tài khoản vừa đăng ký để đăng nhập nhé');
-            //     replace('Login');
-            // } else {
-            //     if (res.code == 0) {
-            //         if (res.data?.error) {
-            //             setErrorState(res.data.error);
-            //         } else {
-            //             Alert.alert('Thông báo', res.message);
-            //         }
-            //     }
-            // }
-            if (res.code == 1 && res.data?.access_token) {    // Login success
-                dispatch(setToken(res.data.access_token));
-                replace('MainStack');
-                await AsyncStorage.setItem('access_token', res.data.access_token);
-            } else {
-                if (res.code == 0) {
-                    if (res.data?.error) {
-                        setErrorState(res.data.error);
-                    } else {
-                        Alert.alert('Thông báo', res.message);
-                    }
-                }
-            }
-        })
-    }
-
+   
     const handleSignUp = () => {
         auth()
           .createUserWithEmailAndPassword(email,password)
           .then(userCredentials=> {
-            const user = userCredentials.user;
-            console.log('Registered with:', user.email)
-            Alert.alert("Dang ki thanh cong")
+           const user = userCredentials.user;
+            //console.log('Registered with:', user.email)
+            Alert.alert("Đăng ký thành công")
         
           })
-          .catch(error =>Alert.alert(error.message))
-         
+          .catch(error =>
+            Alert.alert(error.message)
+          )
+        // navigate('Login')
       }
     
 
     return (
         <View style={styles.container}>
             {/* <KeyboardAwareScrollView style={styles.center} showsVerticalScrollIndicator={false}> */}
-            <ImageBackground style={styles.viewAll} source={icons.introduce.login} resizeMode={'stretch'}>
+            <ImageBackground style={styles.viewAll} source={icons.login.background} resizeMode={'stretch'}>
                 <View style={styles.viewContainer}>
                     <Text style={styles.txtLogin}>{t('register.header')}</Text>
                     
@@ -100,38 +71,37 @@ const Register = memo(() => {
                         <TextInput
                             placeholder={'Nhập Email'}
                             style={styles.txtInput}
+                            value= {email}
+                            onChangeText={text => setEmail(text)}
                         />
                     </View>
-                    <View style={styles.viewInput}>
+                    <View style={styles.viewInput1}>
                         <Image source={icons.introduce.password}
                             style={styles.icoUsername} />
                         <TextInput
                             placeholder={'Nhập mật khẩu'}
                             style={styles.txtInput}
+                            value = {password}
+                            onChangeText={text => setPassword(text)}
                         />
                     </View>
-                    <View style={[styles.viewInput, { marginBottom: 20 }]}>
-                        <Image source={icons.introduce.password}
-                            style={styles.icoUsername} />
-                        <TextInput
-                            placeholder={'Nhập lại mật khẩu'}
-                            style={styles.txtInput}
-                        />
-                    </View>
+                    
                     <Button
                         customTextStyle={{ color: 'white' }}
                         color={'#3F6766'}
-                        width={width_screen * 0.4}
-                        // onPress={onRegister}
+                        //width={width_screen * 0.4}
+                        //onPress={onRegister}
                         // isLoading={loadingState}
                         onPress = {handleSignUp}
                         >
-                        {t('register.login')}
+                        Đăng ký
                     </Button>
+                    
+                  
                     <View style={styles.viewBottom}>
-                        <Text style={styles.txtNoAccount}>{t('register.noAccount')}</Text>
+                        <Text style={styles.txtNoAccount}>Bạn đã có tài khoản ?</Text>
                         <TouchableOpacity onPress={() => navigate('Login')}>
-                            <Text style={styles.txtRegister}>{t('register.register')}</Text>
+                            <Text style={styles.txtRegister}>Đăng nhập</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -150,7 +120,8 @@ const styles = ScaledSheet.create({
         marginTop: Platform.OS == 'android' ? 0 : getStatusBarHeight() + 10
     },
     viewAll: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#6b8e23'
     },
     viewTop: {
         flex: 1
@@ -158,7 +129,7 @@ const styles = ScaledSheet.create({
     viewContainer: {
         backgroundColor: 'white',
         height: height_screen * 0.65,
-        marginTop: height_screen * 0.25,
+        marginTop: height_screen * 0.2,
         paddingTop: 30,
         marginHorizontal: 20,
         alignItems: 'center',
@@ -188,6 +159,14 @@ const styles = ScaledSheet.create({
         alignItems: 'center',
         width: width_screen * 0.8,
         marginTop: '15@ms'
+    },
+    viewInput1: {
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: width_screen * 0.8,
+        marginTop: '15@ms',
+        marginBottom: 50
     },
     icoUsername: {
         width: '24@ms',

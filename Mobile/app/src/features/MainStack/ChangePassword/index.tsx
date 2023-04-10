@@ -16,12 +16,13 @@ import { setToken } from '@/redux/AccessTokenSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import auth from '@react-native-firebase/auth'
+import { err } from 'react-native-svg/lib/typescript/xml';
 const ChangePassword = memo(() => {
     const { navigate } = useNavigation();
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
-    const [password,setPassword] = useState('');
+    const [currentPassword,setcurrentPassword] = useState('');
     const [newPassword,setnewPassword] = useState('');
     const [formUserData, setFormUserData] = useState({
         //name: '',
@@ -42,38 +43,27 @@ const ChangePassword = memo(() => {
         });
     }
 
-    const onRegister = () => {
-        setLoadingState(true);
-        register(formUserData, async (res: any) => {
-            setLoadingState(false);
-            // if (res.code == 1) {
-            //     Alert.alert('Thông báo', 'Đăng ký thành công, bạn hãy sử dụng tài khoản vừa đăng ký để đăng nhập nhé');
-            //     replace('Login');
-            // } else {
-            //     if (res.code == 0) {
-            //         if (res.data?.error) {
-            //             setErrorState(res.data.error);
-            //         } else {
-            //             Alert.alert('Thông báo', res.message);
-            //         }
-            //     }
-            // }
-            if (res.code == 1 && res.data?.access_token) {    // Login success
-                dispatch(setToken(res.data.access_token));
-                replace('MainStack');
-                await AsyncStorage.setItem('access_token', res.data.access_token);
-            } else {
-                if (res.code == 0) {
-                    if (res.data?.error) {
-                        setErrorState(res.data.error);
-                    } else {
-                        Alert.alert('Thông báo', res.message);
-                    }
-                }
-            }
-        })
+    const reauthenticate =(currentPassword: any) => {
+        var user = auth().currentUser
+        var cred = auth.EmailAuthProvider.credential(user?.email, currentPassword)
+        return user?.reauthenticateWithCredential(cred)
     }
 
+    const onChangePassword =() => {
+        reauthenticate(currentPassword)?.then(() => {
+            var user = auth().currentUser;
+        user?.updatePassword(newPassword).then(()=> {
+            Alert.alert("Đổi thành công")
+        })
+        .catch((error) => {
+            Alert.alert("Sai mật khẩu",error.message)
+        })
+        })
+        .catch((error) =>{
+            Alert.alert(error.message)
+        })
+        
+    }
     
 
     return (
@@ -81,7 +71,7 @@ const ChangePassword = memo(() => {
             {/* <KeyboardAwareScrollView style={styles.center} showsVerticalScrollIndicator={false}> */}
             <ImageBackground style={styles.viewAll} source={icons.introduce.login} resizeMode={'stretch'}>
                 <View style={styles.viewContainer}>
-                    <Text style={styles.txtLogin}>{t('register.header')}</Text>
+                    <Text style={styles.txtLogin}>Đổi mật khẩu</Text>
                     
                     <View style={styles.viewInput}>
                         <Image source={icons.introduce.password}
@@ -89,6 +79,10 @@ const ChangePassword = memo(() => {
                         <TextInput
                             placeholder={'Nhập mật khẩu hiện tại'}
                             style={styles.txtInput}
+                            value= {currentPassword}
+                            onChangeText={text => setcurrentPassword(text)}
+                            secureTextEntry = {true}
+
                         />
                     </View>
                     <View style={[styles.viewInput, { marginBottom: 20 }]}>
@@ -96,7 +90,10 @@ const ChangePassword = memo(() => {
                             style={styles.icoUsername} />
                         <TextInput
                             placeholder={'Nhập mật khẩu mới'}
+                            value= {newPassword}
                             style={styles.txtInput}
+                            onChangeText={text => setnewPassword(text)}
+                            secureTextEntry = {true}
                         />
                     </View>
                     <Button
@@ -105,16 +102,11 @@ const ChangePassword = memo(() => {
                         width={width_screen * 0.4}
                         // onPress={onRegister}
                         // isLoading={loadingState}
-                        //onPress = {handleSignUp}
+                        onPress = {onChangePassword}
                         >
-                        {t('register.login')}
+                        Đổi mật khẩu
                     </Button>
-                    <View style={styles.viewBottom}>
-                        <Text style={styles.txtNoAccount}>{t('register.noAccount')}</Text>
-                        <TouchableOpacity onPress={() => navigate('Login')}>
-                            <Text style={styles.txtRegister}>{t('register.register')}</Text>
-                        </TouchableOpacity>
-                    </View>
+                    
                 </View>
             </ImageBackground>
             {/* </KeyboardAwareScrollView> */}
