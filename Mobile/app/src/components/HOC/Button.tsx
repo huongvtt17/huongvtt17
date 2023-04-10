@@ -32,7 +32,7 @@ export const Button = memo(function Button({
             activeOpacity={0.7}>
             {isLoading ?
                 <ActivityIndicator color={'white'} size={'small'} /> :
-                <Text style={[styles.txtStyle, customTextStyle, { fontSize: isSmall ? font_size.NORMAL : font_size.VERY_LARGE }]}>{children}</Text>
+                <Text style={[styles.txtStyle, customTextStyle, ]}>{children}</Text>
             }
         </TouchableOpacity>
     );
@@ -40,21 +40,22 @@ export const Button = memo(function Button({
 
 const styles = ScaledSheet.create({
     btnStyle: {
-        height: '45@ms0.3',
+        height: '55@ms0.3',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: '5@ms',
+        //marginTop:40
     },
-    btnStyleSmall: {
-        height: '35@ms0.3',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '5@ms',
-    },
+    // btnStyleSmall: {
+    //     height: '35@ms0.3',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     borderRadius: '5@ms',
+    // },
     txtStyle: {
         fontFamily: font.SFProTextRegular,
-        fontSize: font_size.VERY_LARGE,
         color: 'white',
+        fontSize:24
         
     }
 })

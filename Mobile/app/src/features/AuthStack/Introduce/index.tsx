@@ -3,15 +3,15 @@ import { View, Text, SafeAreaView, Image, ActivityIndicator, StatusBar, ImageBac
 import { useNavigation } from '@react-navigation/native';
 import { font, font_size } from '@/configs/fonts';
 import { ScaledSheet } from 'react-native-size-matters';
-import icons from '@/assets/icons';
 import { width_screen } from '@/utils';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/HOC';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { setToken } from '@/redux/AccessTokenSlice';
-import { replace } from '@/utils/navigation';
-
+import { navigation, replace } from '@/utils/navigation';
+import auth from '@react-native-firebase/auth'
+import icons from '@/assets/icons';
 const Introduce = memo(() => {
     const { navigate } = useNavigation();
     const { t } = useTranslation();
@@ -30,8 +30,19 @@ const Introduce = memo(() => {
     }
 
     useEffect(() => {
-        getToken();
+        setTimeout( () => {
+            getToken();
+        },1000)
     }, []);
+    useEffect(() => {
+        const unsubscribe = auth().onAuthStateChanged(user => {
+          if (user) {
+            replace("MainStack")
+          }
+        
+        })
+        return unsubscribe
+      }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -39,8 +50,12 @@ const Introduce = memo(() => {
             <ImageBackground style={styles.center} source={icons.introduce.background} resizeMode={'cover'}>
                 <View style={styles.viewBtn}>
                 {loginState ?
-                    <ActivityIndicator color={'gray'} size={'large'} /> :
-                    <Button onPress={() => navigate('Login')} color={'#3F6766'} customTextStyle={{color: 'white'}} width={width_screen * 0.6}>{t('start')}</Button>
+                    <ActivityIndicator color={'#0386D0'} size={'large'} /> :
+                    <Button onPress={() => navigate('Login')} 
+                    customTextStyle={{ color: 'white' }}
+                    color={'#0386D0'}
+                    
+                    >{t('start')}</Button>
                 }
                 </View>
             </ImageBackground>
@@ -59,7 +74,8 @@ const styles = ScaledSheet.create({
     viewBtn: {
         position: 'absolute',
         bottom: 100,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        width:120
     }
 });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Provider } from 'react-redux';
@@ -11,6 +11,9 @@ initI18n();
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { StatusBarView } from './components/StatusBar';
+import firestore from '@react-native-firebase/firestore';
+import  { firebase } from '@react-native-firebase/database';
+
 const queryClient = new QueryClient();
 
 const store = configureStore({
@@ -21,7 +24,9 @@ const store = configureStore({
     }),
 });
 
+
 function App() {
+ 
   return (
     <SafeAreaProvider>
       <StatusBarView theme={'dark-content'} />
@@ -35,3 +40,5 @@ function App() {
 }
 
 export default App;
+
+

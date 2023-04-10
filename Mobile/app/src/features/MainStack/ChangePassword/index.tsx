@@ -1,13 +1,13 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { ScaledSheet } from 'react-native-size-matters';
-import { View, Text, TouchableOpacity, Image, TextInput, Alert, Platform, ImageBackground, } from 'react-native';
+import { View, Text, TouchableOpacity, Image, TextInput, Alert, Platform, ImageBackground } from 'react-native';
 import icons from '@/assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { height_screen, width_screen } from '@/utils';
+import { Button } from '@/components/HOC';
 import { font, font_size } from '@/configs/fonts';
 import { register, cities, districts } from '@/services';
-import { Button } from '@/components/HOC';
 import moment from 'moment';
 import { replace } from '@/utils/navigation';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -16,12 +16,14 @@ import { setToken } from '@/redux/AccessTokenSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import auth from '@react-native-firebase/auth'
-const Register = memo(() => {
+import { err } from 'react-native-svg/lib/typescript/xml';
+const ChangePassword = memo(() => {
     const { navigate } = useNavigation();
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
-    const [password,setPassword] = useState('');
+    const [currentPassword,setcurrentPassword] = useState('');
+    const [newPassword,setnewPassword] = useState('');
     const [formUserData, setFormUserData] = useState({
         //name: '',
         email: '',
@@ -41,69 +43,70 @@ const Register = memo(() => {
         });
     }
 
-   
-    const handleSignUp = () => {
-        auth()
-          .createUserWithEmailAndPassword(email,password)
-          .then(userCredentials=> {
-           const user = userCredentials.user;
-            //console.log('Registered with:', user.email)
-            Alert.alert("Đăng ký thành công")
-        
-          })
-          .catch(error =>
+    const reauthenticate =(currentPassword: any) => {
+        var user = auth().currentUser
+        var cred = auth.EmailAuthProvider.credential(user?.email, currentPassword)
+        return user?.reauthenticateWithCredential(cred)
+    }
+
+    const onChangePassword =() => {
+        reauthenticate(currentPassword)?.then(() => {
+            var user = auth().currentUser;
+        user?.updatePassword(newPassword).then(()=> {
+            Alert.alert("Đổi thành công")
+        })
+        .catch((error) => {
+            Alert.alert("Sai mật khẩu",error.message)
+        })
+        })
+        .catch((error) =>{
             Alert.alert(error.message)
-          )
-        // navigate('Login')
-      }
+        })
+        
+    }
     
 
     return (
         <View style={styles.container}>
             {/* <KeyboardAwareScrollView style={styles.center} showsVerticalScrollIndicator={false}> */}
-            <ImageBackground style={styles.viewAll} source={icons.login.background} resizeMode={'stretch'}>
+            <ImageBackground style={styles.viewAll} source={icons.introduce.login} resizeMode={'stretch'}>
                 <View style={styles.viewContainer}>
-                    <Text style={styles.txtLogin}>{t('register.header')}</Text>
+                    <Text style={styles.txtLogin}>Đổi mật khẩu</Text>
                     
                     <View style={styles.viewInput}>
-                        <Image source={icons.introduce.mail}
-                            style={styles.icoUsername} />
-                        <TextInput
-                            placeholder={'Nhập Email'}
-                            style={styles.txtInput}
-                            value= {email}
-                            onChangeText={text => setEmail(text)}
-                        />
-                    </View>
-                    <View style={styles.viewInput1}>
                         <Image source={icons.introduce.password}
                             style={styles.icoUsername} />
                         <TextInput
-                            placeholder={'Nhập mật khẩu'}
+                            placeholder={'Nhập mật khẩu hiện tại'}
                             style={styles.txtInput}
-                            value = {password}
-                            onChangeText={text => setPassword(text)}
+                            value= {currentPassword}
+                            onChangeText={text => setcurrentPassword(text)}
+                            secureTextEntry = {true}
+
                         />
                     </View>
-                    
+                    <View style={[styles.viewInput, { marginBottom: 20 }]}>
+                        <Image source={icons.introduce.password}
+                            style={styles.icoUsername} />
+                        <TextInput
+                            placeholder={'Nhập mật khẩu mới'}
+                            value= {newPassword}
+                            style={styles.txtInput}
+                            onChangeText={text => setnewPassword(text)}
+                            secureTextEntry = {true}
+                        />
+                    </View>
                     <Button
                         customTextStyle={{ color: 'white' }}
                         color={'#3F6766'}
-                        //width={width_screen * 0.4}
-                        //onPress={onRegister}
+                        width={width_screen * 0.4}
+                        // onPress={onRegister}
                         // isLoading={loadingState}
-                        onPress = {handleSignUp}
+                        onPress = {onChangePassword}
                         >
-                        Đăng ký
+                        Đổi mật khẩu
                     </Button>
                     
-                  
-                    <View style={styles.viewBottom}>
-                        <Text style={styles.txtNoAccount}>Bạn đã có tài khoản ?</Text>
-                        <TouchableOpacity onPress={() => navigate('Login')}>
-                            <Text style={styles.txtRegister}>Đăng nhập</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </ImageBackground>
             {/* </KeyboardAwareScrollView> */}
@@ -120,8 +123,7 @@ const styles = ScaledSheet.create({
         marginTop: Platform.OS == 'android' ? 0 : getStatusBarHeight() + 10
     },
     viewAll: {
-        flex: 1,
-        backgroundColor: '#6b8e23'
+        flex: 1
     },
     viewTop: {
         flex: 1
@@ -129,7 +131,7 @@ const styles = ScaledSheet.create({
     viewContainer: {
         backgroundColor: 'white',
         height: height_screen * 0.65,
-        marginTop: height_screen * 0.2,
+        marginTop: height_screen * 0.25,
         paddingTop: 30,
         marginHorizontal: 20,
         alignItems: 'center',
@@ -159,14 +161,6 @@ const styles = ScaledSheet.create({
         alignItems: 'center',
         width: width_screen * 0.8,
         marginTop: '15@ms'
-    },
-    viewInput1: {
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: width_screen * 0.8,
-        marginTop: '15@ms',
-        marginBottom: 50
     },
     icoUsername: {
         width: '24@ms',
@@ -198,4 +192,4 @@ const styles = ScaledSheet.create({
     }
 });
 
-export default Register;
+export default ChangePassword;

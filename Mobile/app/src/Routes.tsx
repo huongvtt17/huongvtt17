@@ -20,14 +20,15 @@ const MainStackComponent = memo(function MainStackComponent() {
   return (
     <MainStack.Navigator initialRouteName={'MainStack'} headerMode={'none'}>
       <MainStack.Screen name={'MainStack'} component={require('./features/MainStack').default} />
-      <MainStack.Screen name={'UpdateInfo'} component={require('./features/MainStack/Account/UpdateInfo').default} />
-      <MainStack.Screen name={'OtherAccount'} component={require('./features/MainStack/Account/OtherAccount').default} />
       <MainStack.Screen name={'Temperature'} component={require('./features/MainStack/Temperature').default} />
       <MainStack.Screen name={'Air'} component={require('./features/MainStack/Air').default} />
       <MainStack.Screen name={'Percent'} component={require('./features/MainStack/Percent').default} />
       <MainStack.Screen name={'Land'} component={require('./features/MainStack/Land').default} />
       <MainStack.Screen name={'ModeSetting'} component={require('./features/MainStack/ModeSetting').default} />
       <MainStack.Screen name={'Setting'} component={require('./features/MainStack/Setting').default} />
+      <MainStack.Screen name={'Menu'} component={require('./features/MainStack/Menu').default} />
+      <MainStack.Screen name={'ChangePassword'} component={require('./features/MainStack/ChangePassword').default} />
+
     </MainStack.Navigator>
   );
 });

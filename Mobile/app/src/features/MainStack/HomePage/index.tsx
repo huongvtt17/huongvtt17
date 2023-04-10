@@ -9,27 +9,81 @@ import { RootState } from '@/redux';
 import icons from '@/assets/icons';
 import { height_screen, width_screen } from '@/utils';
 import { followingClinic, getProducts, getProfile, getClinics, getVaccines } from '@/services';
-import { setProfile } from '@/redux/ProfileSlice';
-import { useIsFocused } from '@react-navigation/core';
-import { font, font_size } from '@/configs/fonts';
+
 import { scale, ScaledSheet } from 'react-native-size-matters';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 //import database from '@react-native-firebase/database';
 import { firebaseApp } from '@/Firebase/ConfigFirebase';
 import { ReactNativeFirebase } from '@react-native-firebase/app';
 import { firebase } from '@react-native-firebase/database';
+import { NotificationListener, requestUserPermission, sendPushNotification } from '@/utils/pushnotification';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const HomePage = memo(() => {
   const { t } = useTranslation();
-  const token = useSelector((state: RootState) => state.accessTokenSlice.token);
+  //const token = useSelector((state: RootState) => state.accessTokenSlice.token);
   const profile: any = useSelector((state: RootState) => state.profileSlice.data);
   const [values, setValues] = useState();
   const [status, setStatus] = useState();
   const [isVisible, setIsVisible] = useState(false);
   let date = new Date()
 
+  const Toggle1 = () => {
+    if (status?.FAN === "ON") {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={{ tintColor: '#37D211' }}
 
+        />
+      )
+    } else {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={styles.icPower}
+        />
+      )
+    }
+  }
+  const Toggle2 = () => {
+    if (status?.PHUNSUONG === "ON") {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={{ tintColor: '#37D211' }}
 
+        />
+      )
+    } else  {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={styles.icPower}
+        />
+      )
+    }
+  }
+  const Toggle3 = () => {
+    if (status?.VAN === "ON") {
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={{ tintColor: '#37D211' }}
+
+        />
+      )
+    } else{
+      return (
+        <Image
+          source={icons.homepage.power}
+          style={styles.icPower}
+        />
+      )
+    }
+  }
 
   useEffect(() => {
     firebase
@@ -38,10 +92,8 @@ const HomePage = memo(() => {
       .ref('Sensor/')
       .on('value', (snapshot: { val: () => any; }) => {
         // console.log('snapshot', snapshot.val())
-
         setValues(snapshot.val())
       }
-
       )
   }, [])
 
@@ -52,33 +104,71 @@ const HomePage = memo(() => {
       .ref('Device/')
       .on('value', (snapshot: { val: () => any; }) => {
         // console.log('snapshot', snapshot.val())
-
         setStatus(snapshot.val())
       }
-
       )
   }, [])
 
-  
+  useEffect(() => {
+    requestUserPermission();
+    NotificationListener();
+  })
+  useEffect(() => {
+    if(parseInt(values?._Temperature) > 35 ) {
+      sendAlert(
+        'CẢNH BÁO',
+        'Nhiệt độ vượt ngưỡng'
+      )
+    }
+    if(parseInt(values?._Humidity) > 70 ) {
+      sendAlert(
+        'CẢNH BÁO',
+        'Nhiệt độ vượt ngưỡng'
+      )
+    }
+    if(parseInt(values?._Moisture) > 70 ) {
+      sendAlert(
+        'CẢNH BÁO',
+        'Nhiệt độ vượt ngưỡng'
+      )
+    }
+    if(parseInt(values?._CO2) > 500 ) {
+      sendAlert(
+        'CẢNH BÁO',
+        'Nhiệt độ vượt ngưỡng'
+      )
+    }
 
+  }, [])
+
+  const sendAlert = async (title: any, body: any) => {
+    let token = await AsyncStorage.getItem('fcmToken') 
+    console.log('sendPushNotification', token)
+    sendPushNotification(
+      token,
+      title,
+      body
+    );
+  }
 
   return (
     <>
+    <View>
       <View style={styles.header}>
         <TouchableOpacity
           activeOpacity={0.7}
           //onPress={() => { setIsVisible(!isVisible) }}
-          onPress={() => { navigate('ModeSetting') }}
+          onPress={() => { navigate('Menu') }}
         >
           <Image
             source={icons.homepage.menu}
             style={styles.icMenu}
           />
         </TouchableOpacity>
-        <Text style={styles.txtheader}>Bảng điều khiển</Text>
+        <Text style={styles.txtheader}>TRANG CHỦ</Text>
         <TouchableOpacity
-        activeOpacity={0.7}
-        onPress={() => { navigate('Setting') }}
+          activeOpacity={0.7}
+          onPress={() => { navigate('Setting') }}
         >
           <Image
             source={icons.homepage.setting}
@@ -88,41 +178,20 @@ const HomePage = memo(() => {
       </View>
       <View style={styles.control}>
         <View style={styles.view}>
-          <TouchableOpacity
-          // onPress={OnOff}
-          >
-            <Image
-              source={icons.homepage.power}
-              style={styles.icPower}
-            />
-          </TouchableOpacity>
+          <Toggle1 />
           <Text>{status?.FAN}</Text>
           <Text style={styles.txtbody}>Quạt</Text>
-
         </View>
         <View style={styles.view}>
-          <TouchableOpacity
-
-          >
-            <Image
-              source={icons.homepage.power}
-              style={styles.icPower}
-            />
-          </TouchableOpacity>
+          <Toggle2 />
           <Text>{status?.PHUNSUONG}</Text>
           <Text style={styles.txtbody}>Phun Sương</Text>
         </View>
         <View style={styles.view}>
-          <TouchableOpacity>
-            <Image
-              source={icons.homepage.power}
-              style={styles.icPower}
-            />
-          </TouchableOpacity>
+          <Toggle3 />
           <Text>{status?.VAN}</Text>
           <Text style={styles.txtbody}>CO2</Text>
         </View>
-
       </View>
       <View style={styles.viewDisplay}>
         <TouchableOpacity
@@ -150,21 +219,21 @@ const HomePage = memo(() => {
             style={styles.icon}
           />
           <Text style={styles.txtView}>Độ ẩm không khí</Text>
-          <Text style={styles.txtDisplay}>{values?._Humidity}%</Text>
+          <Text style={styles.txtDisplay}>{values?._Humidity.toFixed(2)} %</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.viewDisplay}>
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.viewControl}
-          onPress={() => { navigate('Percent') }}
+          onPress={() => { navigate('Land') }}
         >
           <Image
             source={icons.homepage.land}
             style={styles.icon}
           />
           <Text style={styles.txtView}>Độ ẩm đất</Text>
-          <Text style={styles.txtDisplay}>{values?._Moisture} %</Text>
+          <Text style={styles.txtDisplay}>{values?._Moisture.toFixed(2)} %</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.viewDisplay}>
@@ -178,57 +247,10 @@ const HomePage = memo(() => {
             style={styles.icon}
           />
           <Text style={styles.txtView}>Nồng độ CO2</Text>
-          <Text style={styles.txtDisplay}>{values?._CO2} ppm</Text>
+          <Text style={styles.txtDisplay}>{values?._CO2.toFixed(2)} ppm</Text>
         </TouchableOpacity>
       </View>
-      {
-        isVisible ?
-          <View style={{
-            position: 'absolute',
-            width: 150,
-            height: 100,
-            backgroundColor: 'yellow',
-            top: 60,
-            left: 20
-          }}>
-            <Text>1</Text>
-            <Text>2</Text>
-          </View>
-          : <></>
-      }
-
-
-      {/* <StatusBar barStyle={'dark-content'} />
-      <Header
-        username={'Yoonabar'}
-        avatar={'https://vcdn-giaitri.vnecdn.net/2020/05/30/t79Y43W-8289-1590814926.jpg'}
-        description={'Welcome to Vatta toeic'}
-        
-      />
-
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        {false ?
-          <ActivityIndicator size={'small'} style={{ marginVertical: 20 }} color={'gray'} />
-          : <FlatListPackageHome
-            header={t('homepage.recent')}
-            data={[1, 2, 3]}
-            seeMore={true}
-            onPress={() => { }}
-          />
-        }
-
-        {false ?
-          <Spinner />
-          : <FlatListUser
-            header={t('Người dùng tích cực')}
-            data={[1, 2, 3, 4, 5]}
-            seeMore={true}
-            onPress={() => { }}
-          />
-        }
-        <Text style={styles.txtHeader}>{'Tiện ích'}</Text>
-        <Categories clinicId={clinicId} />
-      </ScrollView> */}
+      </View>
     </>
   );
 });
@@ -236,7 +258,8 @@ const HomePage = memo(() => {
 const styles = ScaledSheet.create({
   header: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 5
 
   },
   icMenu: {
@@ -249,7 +272,7 @@ const styles = ScaledSheet.create({
   icSetting: {
     width: scale(24),
     height: scale(24),
-    marginLeft: '70@ms',
+    marginLeft: '100@ms',
     marginVertical: '10@ms'
 
   },
@@ -260,6 +283,11 @@ const styles = ScaledSheet.create({
 
   },
   icPower: {
+    height: scale(36),
+    width: scale(36),
+
+  },
+  icPower1: {
     height: scale(36),
     width: scale(36),
 
